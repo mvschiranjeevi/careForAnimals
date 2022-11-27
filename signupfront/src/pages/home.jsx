@@ -5,6 +5,7 @@ import Provider from "../chakra-theme/Provider";
 import AnimalCard from "../components/AnimalCard";
 import ScrollIntoView from "react-scroll-into-view";
 import ResponsiveAppBar from "../components/navBar";
+import Footer from "../components/Footer";
 
 const HomePage = () => {
   const animals = [
@@ -116,6 +117,7 @@ const HomePage = () => {
             </SimpleGrid>
           </Stack>
         </Stack>
+        <Footer/>
       </Provider>
     </div>
   );
