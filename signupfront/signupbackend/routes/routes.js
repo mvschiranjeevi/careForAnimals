@@ -220,4 +220,16 @@ router.get("/animalInfo", async (request, response) => {
   }
 });
 
+router.get("/getAnimals", async (request, response) => {
+  try {
+      animalInfo.find({}, async (req, res) => {
+      console.log("animals", res);
+      response.status(200).send(res);
+    });
+  } catch (err) {
+    console.log(err);
+    response.status(500).json(err);
+  }
+});
+
 module.exports = router;
