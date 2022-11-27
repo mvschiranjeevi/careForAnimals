@@ -12,11 +12,13 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AnimalCard = (props) => {
   const { src, width, height, name } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isHover, setIsHover] = useState(false);
+  let navigate = useNavigate()
 
   const onMouseOver = () => setIsHover(true);
   const onMouseDown = () => setIsHover(false);
@@ -39,10 +41,9 @@ const AnimalCard = (props) => {
       alignItems="center"
       onMouseOver={onMouseOver}
       onMouseOut={onMouseDown}
-      onClick={onClick}
+      onClick = {() => navigate('/animalInfo', {state:{animalName: name}})}
     >
       {isHover && <Heading color="white">{name}</Heading>}
-      <AnimalDetails isOpen={isOpen} onClose={handleClose} name={name} />
     </Stack>
   );
 };

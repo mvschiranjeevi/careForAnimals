@@ -23,6 +23,7 @@ import {
 } from "@chakra-ui/react";
 import EventsPage from "./pages/events";
 import HomePage from "./pages/home";
+import AnimalInfo from "./pages/animalInfo";
 
 class App extends Component {
   constructor() {
@@ -90,8 +91,8 @@ class App extends Component {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/responsiveAppBar" element={<ResponsiveAppBar />} />
           <Route path="/events" element={<EventsPage />} />
-
           <Route path="/profile" element={<Profile />} />
+          <Route path="/animalInfo" element={<AnimalInfo />} />
           <Route path="/" element={<HomePage />} />
         </Routes>
       </>

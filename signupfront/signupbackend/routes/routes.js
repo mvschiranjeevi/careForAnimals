@@ -3,6 +3,7 @@ const router = express.Router();
 const signUpTemplateCopy = require("../models/signUpModels");
 const events = require("../models/events");
 const eventType = require("../models/eventType");
+const animalInfo = require("../models/animal");
 
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
@@ -198,6 +199,21 @@ router.post("/createEvent", async (request, response) => {
     // });
     // newEvent.save();
     // response.status(200).json(eventType);
+  } catch (err) {
+    console.log(err);
+    response.status(500).json(err);
+  }
+});
+
+router.get("/animalInfo", async (request, response) => {
+  try {
+    const name = request.query.animalName;
+    const data = await animalInfo.find({commonName: name});
+    try {
+        response.send(data);
+    } catch (error) {
+      response.status(500).send(error);
+    }
   } catch (err) {
     console.log(err);
     response.status(500).json(err);

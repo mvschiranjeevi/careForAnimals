@@ -9,10 +9,10 @@ import ResponsiveAppBar from "../components/navBar";
 const HomePage = () => {
   const animals = [
     {
-      src: "assets/animals/tiger.jpg",
+      src: "assets/animals/asian_elephant.png",
       width: "15rem",
       height: "15rem",
-      name: "Tiger",
+      name: "Asian Elephant",
     },
     {
       src: "assets/animals/owl.jpg",
