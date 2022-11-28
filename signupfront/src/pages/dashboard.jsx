@@ -8,8 +8,7 @@ import { paginate } from "../utils/paginate";
 // import config from "../utils/config.json";
 import http from "../services/httpService";
 import ResponsiveAppBar from "../components/navBar";
-import { Stack } from "react-bootstrap-icons";
-import { Spinner } from "@chakra-ui/react";
+import { Spinner, Stack } from "@chakra-ui/react";
 import Provider from "../chakra-theme/Provider";
 
 class DashboardPage extends Component {

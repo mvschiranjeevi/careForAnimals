@@ -5,12 +5,17 @@ import Input from "../components/input";
 import Form from "../components/form";
 import http from "../services/httpService";
 import ResponsiveAppBar from "../components/navBar";
+import { Spinner, Stack } from "@chakra-ui/react";
+import Provider from "../chakra-theme/Provider";
+import { Link } from "react-router-dom";
 
 // @ts-ignore
 // import config from "../utils/config.json";
 import { createpost } from "../services/postCreateService.js";
 
 class NewPost extends Form {
+  token = localStorage.getItem("token");
+
   tagsEndPoint = "http://localhost:4000/tags";
   state = {
     data: { title: "", description: "", tags: [] },
@@ -62,6 +67,20 @@ class NewPost extends Form {
     return (
       <React.Fragment>
         {/* <ResponsiveAppBar /> */}
+
+        {!this.token && (
+          <Provider>
+            <Stack
+              boxSize="full"
+              h="100vh"
+              justify="center"
+              alignItems="center"
+            >
+              <Spinner size="xl" />
+              <Link href="/login">You may not be logged in</Link>
+            </Stack>
+          </Provider>
+        )}
         <ToastContainer />
         <div className="container-lg">
           <h1 className="text-center m-2">Create a New Discussion</h1>
