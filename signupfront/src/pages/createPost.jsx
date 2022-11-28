@@ -61,7 +61,7 @@ class NewPost extends Form {
     const { data, errors, tags } = this.state;
     return (
       <React.Fragment>
-        <ResponsiveAppBar />
+        {/* <ResponsiveAppBar /> */}
         <ToastContainer />
         <div className="container-lg">
           <h1 className="text-center m-2">Create a New Discussion</h1>

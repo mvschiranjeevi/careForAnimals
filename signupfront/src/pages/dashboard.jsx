@@ -72,7 +72,7 @@ class DashboardPage extends Component {
 
     return (
       <React.Fragment>
-        <ResponsiveAppBar />
+        {/* <ResponsiveAppBar /> */}
         {!this.token && (
           <Provider>
             <Stack
