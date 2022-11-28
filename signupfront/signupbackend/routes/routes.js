@@ -3,6 +3,7 @@ const router = express.Router();
 const signUpTemplateCopy = require("../models/signUpModels");
 const events = require("../models/events");
 const eventType = require("../models/eventType");
+const animalInfo = require("../models/animal");
 
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");

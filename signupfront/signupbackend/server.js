@@ -29,7 +29,7 @@ app.use(cors());
 //   next();
 // });
 
-mongoose.connect(process.env.DATABASE_ACCESS, (err) => {
+mongoose.connect(process.env.DB_PATH, (err) => {
   if (err) console.log(err);
   else console.log("mongdb is connected");
 });
