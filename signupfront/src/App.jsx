@@ -86,7 +86,7 @@ class App extends Component {
   render() {
     return (
       <>
-        {/* <ResponsiveAppBar /> */}
+        <ResponsiveAppBar />
         <CssBaseline />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
