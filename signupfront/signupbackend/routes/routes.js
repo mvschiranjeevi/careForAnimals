@@ -3,23 +3,24 @@ const router = express.Router();
 const signUpTemplateCopy = require("../models/signUpModels");
 const events = require("../models/events");
 const eventType = require("../models/eventType");
-const animalInfo = require("../models/animal");
 
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
+const config = require("../config/default.json");
 
 router.post("/signup", async (request, response) => {
   const saltPassword = await bcrypt.genSalt(10);
   const securePassword = await bcrypt.hash(request.body.password, saltPassword);
   const emails = request.body.email;
+  console.log(emails);
   try {
     signUpTemplateCopy.findOne({ email: emails }, async (err, value) => {
-      console.log(value);
+      // console.log(value);
 
       if (value) {
-        console.log("zero");
+        // console.log("zero");
         response.status(409).send({ message: "User is already registerd" });
       } else {
         const signedUpUser = new signUpTemplateCopy({
@@ -42,7 +43,7 @@ const verifyJWT = (request, response, next) => {
   if (!token) {
     response.send("Please send token");
   } else {
-    jwt.verify(token, process.env.JSON_SECRET, (err, decoded) => {
+    jwt.verify(token, config.jwtPrivateKey, (err, decoded) => {
       if (err) {
         response.send({ auth: false, message: "You failed to authenticate !" });
       } else {
@@ -64,15 +65,16 @@ router.post("/login", async (request, response) => {
     if (value) {
       if (await bcrypt.compare(password, value.password)) {
         const id = value.id;
-        const token = jwt.sign({ id }, process.env.JSON_SECRET, {
-          expiresIn: 300,
-        });
-
+        const token = jwt.sign(
+          { _id: value._id, isAdmin: true },
+          config.jwtPrivateKey
+        );
         response.send({
           message: "Login successfully",
           email: value.email,
           auth: true,
           token: token,
+          user_id: value._id,
         });
       } else {
         response.status(409).send({
@@ -205,12 +207,32 @@ router.post("/createEvent", async (request, response) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  const tags = await Tag.find();
+  res.send(tags);
+});
+
+router.post("/tags", async (req, res) => {
+  const { error } = validateTag(req.body);
+  if (error) return res.status(400).send("enter a valid tag");
+  const tag = new Tag({
+    name: req.body.name,
+  });
+  try {
+    await tag.save();
+    console.log("tag created");
+    res.send(_.pick(tag, ["_id", "name", "used"]));
+  } catch (err) {
+    console.log("err", err);
+  }
+});
+
 router.get("/animalInfo", async (request, response) => {
   try {
     const name = request.query.animalName;
-    const data = await animalInfo.find({commonName: name});
+    const data = await animalInfo.find({ commonName: name });
     try {
-        response.send(data);
+      response.send(data);
     } catch (error) {
       response.status(500).send(error);
     }
@@ -222,7 +244,7 @@ router.get("/animalInfo", async (request, response) => {
 
 router.get("/getAnimals", async (request, response) => {
   try {
-      animalInfo.find({}, async (req, res) => {
+    animalInfo.find({}, async (req, res) => {
       console.log("animals", res);
       response.status(200).send(res);
     });
