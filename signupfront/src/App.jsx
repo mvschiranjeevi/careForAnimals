@@ -9,6 +9,8 @@ import ForgotPasswordPage from "./pages/forgotPassword";
 import { CssBaseline } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import DashboardPage from "./pages/dashboard";
+import NewPost from "./pages/createPost";
+import PostPage from "./pages/postpage";
 import ResponsiveAppBar from "./components/navBar";
 import Profile from "./pages/profile";
 import {
@@ -84,18 +86,20 @@ class App extends Component {
   render() {
     return (
       <>
-      <ResponsiveAppBar />
+        <ResponsiveAppBar />
         <CssBaseline />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/forgot" element={<ForgotPasswordPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/dashboard" element={<DashboardPage user={{}} />} />
           <Route path="/responsiveAppBar" element={<ResponsiveAppBar />} />
           <Route path="/events" element={<EventsPage />} />
+          <Route path="/new-post" element={<NewPost user={{}} />} />
+          <Route path="/post/:id" element={<PostPage user={{}} />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/animalInfo" element={<AnimalInfo />} />
-          <Route path="/animalData" element={<AnimalTable/>}/>
+          <Route path="/animalData" element={<AnimalTable />} />
           <Route path="/" element={<HomePage />} />
         </Routes>
       </>

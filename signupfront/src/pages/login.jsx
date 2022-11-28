@@ -83,10 +83,12 @@ const LoginPage = () => {
     axios
       .post("http://localhost:4000/app/login", values)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.status === 200) {
+          // console.log(response.data.token);
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.email));
+          localStorage.setItem("user_id", response.data.user_id);
 
           setLoginSuccess(true);
         }

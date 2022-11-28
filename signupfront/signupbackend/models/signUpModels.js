@@ -33,4 +33,4 @@ const signUpTemplate = new mongoose.Schema({
     default: Date.now,
   },
 });
-module.exports = mongoose.model("mytable", signUpTemplate);
+module.exports = mongoose.model("users", signUpTemplate);

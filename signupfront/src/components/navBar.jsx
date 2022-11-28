@@ -58,7 +58,7 @@ function ResponsiveAppBar() {
   ];
   const logpages = [
     { name: "My Events", link: "/events" },
-    { name: "Discussion Forum", link: "" },
+    { name: "Discussion Forum", link: "/dashboard" },
   ];
   const logoutPages = [
     { name: "Sign Up", link: "/signup" },
