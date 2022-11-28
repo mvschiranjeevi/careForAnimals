@@ -36,7 +36,7 @@ const AnimalInfo = props => {
   async function getAnimalInfo(name) {
   	try {
   		const response = await axios.get('http://localhost:4000/app/animalInfo', {
-  			params: { animalName: "Asian Elephant" }}).then(
+  			params: { animalName: name }}).then(
   				function (response) {
   					setAnimalData(response.data[0]);
   					setIsLoaded(true);

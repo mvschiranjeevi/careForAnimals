@@ -25,7 +25,7 @@ const HomePage = () => {
       src: "assets/animals/wolf.jpg",
       width: "15rem",
       height: "15rem",
-      name: "Wolf",
+      name: "Arctic Wolf",
     },
   ];
 
