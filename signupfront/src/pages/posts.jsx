@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 const Posts = (props) => {
   const { posts } = props;
+
   return (
     <div className="list-group">
       {posts.map((post) => (
@@ -14,6 +15,7 @@ const Posts = (props) => {
             <h5 className="mb-1">{post.title}</h5>
           </div>
           <small>Created by {post.author.fullName}</small>
+          <small> || Created On {post.time.split("T")[0]}</small>
           <br />
           <small className="overflow-hidden">{post.description}</small>
           <div className="mt-1">

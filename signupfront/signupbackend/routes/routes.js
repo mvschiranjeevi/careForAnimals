@@ -3,7 +3,7 @@ const router = express.Router();
 const signUpTemplateCopy = require("../models/signUpModels");
 const events = require("../models/events");
 const eventType = require("../models/eventType");
-
+const animalInfo = require("../models/animal");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
@@ -33,6 +33,24 @@ router.post("/signup", async (request, response) => {
         response.status(200).json(signUpTemplateCopy);
       }
     });
+  } catch (err) {
+    console.log(err);
+    response.status(500).json(err);
+  }
+});
+router.post("/createEvent", async (request, response) => {
+  try {
+    const eventCreate = new events({
+      eventType: request.body.eventType,
+      eventTitle: request.body.eventTitle,
+      startDate: request.body.startDate,
+      endDate: request.body.endDate,
+      picture: request.body.pciture,
+      location: request.body.location,
+      description: request.body.description,
+    });
+    eventCreate.save();
+    response.status(200).json(events);
   } catch (err) {
     console.log(err);
     response.status(500).json(err);

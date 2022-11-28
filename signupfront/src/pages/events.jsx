@@ -119,30 +119,6 @@ const EventsPage = () => {
     };
   });
 
-  //   [
-
-  // {
-  //   name: "Lakers vs Jazz",
-  //   createdBy: "ChiruBabes",
-  //   startDate: "11/24/22",
-  //   endDate: "11/26/22",
-  //   description: "Long ass text",
-  //   interested: true,
-  //   image:
-  //     "https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60",
-  // },
-  // {
-  //   name: "Warriors vs Clippers",
-  //   createdBy: "ChiruBabes",
-  //   startDate: "11/24/22",
-  //   endDate: "11/26/22",
-  //   description: "Long ass text",
-  //   interested: false,
-  //   image:
-  //     "https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60",
-  // },
-  //   ];
-
   if (!category) {
     return <Spinner />;
   }
@@ -264,8 +240,9 @@ const EventsPage = () => {
             </SimpleGrid>
           </Stack>
         </FormProvider>
-        <CreateEventDialog categoryData={category} />
       </Provider>
+
+      <CreateEventDialog categoryData={category} />
     </div>
   );
 };
