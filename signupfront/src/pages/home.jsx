@@ -31,7 +31,6 @@ const HomePage = () => {
 
   return (
     <div>
-      <ResponsiveAppBar />
       <Provider>
         <Stack spacing="0">
           <Stack

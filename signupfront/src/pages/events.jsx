@@ -17,7 +17,6 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
-import ResponsiveAppBar from "../components/navBar";
 import { useEffect, useState } from "react";
 
 import CreateEventDialog from "../components/CreateEventDialog";
@@ -150,8 +149,6 @@ const EventsPage = () => {
 
   return (
     <div>
-      <ResponsiveAppBar />
-
       <Provider>
         <FormProvider {...methods}>
           <Stack h="full" bg="gray.200">
