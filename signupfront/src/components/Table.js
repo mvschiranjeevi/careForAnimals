@@ -56,7 +56,7 @@ export default function AnimalsTable() {
   };
 
   return (
-    <Paper sx={{ width: '80%', overflow: '', marginLeft:'80px', marginTop:'80px' }}>
+    <Paper sx={{ width: '80%', overflow: '', marginLeft:'30px', marginTop:'50px' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -64,7 +64,7 @@ export default function AnimalsTable() {
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  align='right'
+                  align='center'
                   style={{ minWidth: column.minWidth }}
                 >
                   {column.label}
@@ -81,10 +81,8 @@ export default function AnimalsTable() {
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align='right'>
-                          {column.format && typeof value === 'number'
-                            ? column.format(value)
-                            : value}
+                        <TableCell key={column.id} align='center' component="a" href="">
+                          {value}
                         </TableCell>
                       );
                     })}
