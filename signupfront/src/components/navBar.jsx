@@ -75,7 +75,7 @@ function ResponsiveAppBar() {
         <Toolbar disableGutters>
           <a href="/">
             <img
-              src="assets/White_paw_print.png"
+              src="/assets/White_paw_print.png"
               height="25rem"
               width="25rem"
             />
