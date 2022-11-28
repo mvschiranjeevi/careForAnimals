@@ -26,6 +26,7 @@ import {
 import EventsPage from "./pages/events";
 import HomePage from "./pages/home";
 import AnimalInfo from "./pages/animalInfo";
+import AnimalsInfo from "./pages/animalsInfo";
 import AnimalTable from "./pages/animalTable";
 
 class App extends Component {
@@ -98,7 +99,7 @@ class App extends Component {
           <Route path="/new-post" element={<NewPost user={{}} />} />
           <Route path="/post/:id" element={<PostPage user={{}} />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/animalInfo" element={<AnimalInfo />} />
+          <Route path="/animalInfo" element={<AnimalsInfo />} />
           <Route path="/animalData" element={<AnimalTable />} />
           <Route path="/" element={<HomePage />} />
         </Routes>
