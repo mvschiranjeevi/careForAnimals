@@ -54,7 +54,7 @@ const AnimalInfo = props => {
 				    <Grid item xs={1}></Grid>
 					<Grid item xs={5}>
 						<Item height="100%">
-							<Stack bgImage={animalData.imageUrl}
+							<Stack bgImage={animalData?.imageUrl}
 								bgPosition="center"
 								bgRepeat="no-repeat"
 								bgSize="cover"
@@ -85,7 +85,7 @@ const AnimalInfo = props => {
                                                         readMoreText = {"Read more ⬇"}
                                                         readLessText = {"Read less ⬇"}
                                                     >
-                                                        {animalData.threatInfo}
+                                                        {animalData?.threatInfo}
                                                     </ReactReadMoreReadLess>
 												</Typography>
 											</React.Fragment>
@@ -109,7 +109,7 @@ const AnimalInfo = props => {
                                                         readMoreText = {"Read more ⬇"}
                                                         readLessText = {"Read less ⬆"}
                                                     >
-                                                        {animalData.description}
+                                                        {animalData?.description}
                                                     </ReactReadMoreReadLess>
 												</Typography>
 											</React.Fragment>
@@ -138,7 +138,7 @@ const AnimalInfo = props => {
 													variant="body2"
 													color="text.primary"
 												>
-													{animalData.status}
+													{animalData?.status}
 												</Typography>
 											</React.Fragment>
 										}
@@ -159,7 +159,7 @@ const AnimalInfo = props => {
 													variant="body2"
 													color="text.primary"
 												>
-													{animalData.population}
+													{animalData?.population}
 												</Typography>
 											</React.Fragment>
 										}
@@ -180,7 +180,7 @@ const AnimalInfo = props => {
 													variant="body2"
 													color="text.primary"
 												>
-													{animalData.sciName}
+													{animalData?.sciName}
 												</Typography>
 											</React.Fragment>
 										}

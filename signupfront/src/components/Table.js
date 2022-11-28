@@ -8,35 +8,42 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useNavigate } from "react-router-dom";
+import Axios from 'axios';
 
 const columns = [
-  { id: 'name', label: 'CommonName', minWidth: 170 },
-  { id: 'sciname', label: 'ScientificName', minWidth: 100 }
+  { id: 'commonName', label: 'CommonName', minWidth: 170 },
+  { id: 'sciName', label: 'ScientificName', minWidth: 100 }
 ];
 
-function createData(name, sciname) {
-    return { name, sciname};
-  }
   
   const rows = [
-    createData('African Elephant', 'Loxodonta africana'),
-    createData('Arctic Wolf', 'Loxodonta africana'),
-    createData('African Elephant', 'Loxodonta africana'),
-    createData('African Elephant', 'Loxodonta africana'),
-    createData('African Elephant', 'Loxodonta africana'),
-    createData('African Elephant', 'Loxodonta africana'),
-    createData('African Elephant', 'Loxodonta africana'),
-    createData('African Elephant', 'Loxodonta africana'),
-    createData('African Elephant', 'Loxodonta africana'),
-    createData('African Elephant', 'Loxodonta africana'),
-    createData('African Elephant', 'Loxodonta africana'),
-    createData('African Elephant', 'Loxodonta africana'),
+    {name:"African Elephant",sciname:"Loxodonta africana"},
+    // createData('African Elephant', 'Loxodonta africana'),
+    // createData('Arctic Wolf', 'Loxodonta africana'),
+    // createData('African Elephant', 'Loxodonta africana'),
+    // createData('African Elephant', 'Loxodonta africana'),
+    // createData('African Elephant', 'Loxodonta africana'),
+    // createData('African Elephant', 'Loxodonta africana'),
+    // createData('African Elephant', 'Loxodonta africana'),
+    // createData('African Elephant', 'Loxodonta africana'),
+    // createData('African Elephant', 'Loxodonta africana'),
+    // createData('African Elephant', 'Loxodonta africana'),
+    // createData('African Elephant', 'Loxodonta africana'),
+    // createData('African Elephant', 'Loxodonta africana'),
   ];
 
 export default function AnimalsTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   let navigate = useNavigate()
+  const [animals,setAnimals]=React.useState(null);
+
+  React.useEffect( () => {
+    Axios.get(`http://localhost:4000/app/getAnimals`).then((response) => {
+      setAnimals(response.data);
+      console.log(response);
+    });
+}, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -52,7 +59,8 @@ export default function AnimalsTable() {
   }
 
   return (
-    <Paper sx={{ width: '80%', overflow: '', marginLeft:'30px', marginTop:'50px' }}>
+    <>
+    {animals && <Paper sx={{ width: '80%', overflow: '', marginLeft:'30px', marginTop:'50px' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -69,16 +77,16 @@ export default function AnimalsTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {animals
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
-                        console.log(row['name']);
+                        console.log(row['commonName']);
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align='center' component="a" onClick={() => navigate('/animalInfo', {state:{animalName: row['name']}})}>
+                        <TableCell key={column.id} align='center' component="a" onClick={() => navigate('/animalInfo', {state:{animalName: row['commonName']}})}>
                           {value}
                         </TableCell>
                       );
@@ -92,12 +100,13 @@ export default function AnimalsTable() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={animals.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </Paper>
+    </Paper>}
+    </>
   );
 }
