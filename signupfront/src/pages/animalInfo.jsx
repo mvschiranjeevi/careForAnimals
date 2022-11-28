@@ -1,6 +1,5 @@
 import { Stack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import ResponsiveAppBar from "../components/navBar";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { styled } from '@mui/material/styles';
@@ -50,7 +49,6 @@ const AnimalInfo = props => {
 
   return (
   	<div>
-  		<ResponsiveAppBar />
 			{ isLoaded ? (
 				<Grid container spacing={1}>
 				    <Grid item xs={1}></Grid>

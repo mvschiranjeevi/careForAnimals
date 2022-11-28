@@ -7,44 +7,36 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { useNavigate } from "react-router-dom";
 
 const columns = [
   { id: 'name', label: 'CommonName', minWidth: 170 },
-  { id: 'sciname', label: 'ScientificName', minWidth: 100 },
-  { id:'group', label: 'SpeciesGroup', minWidth: 170 },
-  { id: 'location', label: 'Location', minWidth: 170 },
+  { id: 'sciname', label: 'ScientificName', minWidth: 100 }
 ];
 
-function createData(name, sciname, group, location) {
-    return { name, sciname, group, location };
+function createData(name, sciname) {
+    return { name, sciname};
   }
   
   const rows = [
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
-    createData('African Elephant', 'Loxodonta africana', 'Mammal', 'Africa'),
+    createData('African Elephant', 'Loxodonta africana'),
+    createData('Arctic Wolf', 'Loxodonta africana'),
+    createData('African Elephant', 'Loxodonta africana'),
+    createData('African Elephant', 'Loxodonta africana'),
+    createData('African Elephant', 'Loxodonta africana'),
+    createData('African Elephant', 'Loxodonta africana'),
+    createData('African Elephant', 'Loxodonta africana'),
+    createData('African Elephant', 'Loxodonta africana'),
+    createData('African Elephant', 'Loxodonta africana'),
+    createData('African Elephant', 'Loxodonta africana'),
+    createData('African Elephant', 'Loxodonta africana'),
+    createData('African Elephant', 'Loxodonta africana'),
   ];
 
 export default function AnimalsTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  let navigate = useNavigate()
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -54,6 +46,10 @@ export default function AnimalsTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const handleClick=()=>{
+
+  }
 
   return (
     <Paper sx={{ width: '80%', overflow: '', marginLeft:'30px', marginTop:'50px' }}>
@@ -79,9 +75,10 @@ export default function AnimalsTable() {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
+                        console.log(row['name']);
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align='center' component="a" href="">
+                        <TableCell key={column.id} align='center' component="a" onClick={() => navigate('/animalInfo', {state:{animalName: row['name']}})}>
                           {value}
                         </TableCell>
                       );
