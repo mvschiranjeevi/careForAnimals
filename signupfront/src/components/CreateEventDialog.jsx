@@ -25,13 +25,14 @@ import { object, string } from "zod";
 import axios from "axios";
 
 const eventsSchema = object({
-  eventTitle: string().min(5, "Title is required").max(30),
+  eventTitle: string().min(5, "Title is required").max(20),
   eventType: string().min(5, "User Name is required").max(30),
   description: string().min(5, "Description is required").max(1024),
   startDate: string().min(5, "Start Date is required").max(30),
   endDate: string().min(5, "End Date is required").max(30),
-  location: string().min(5, "End Date is required").max(30),
-});
+  location: string().min(5, "location is required").max(30),
+  relatedTo: string().min(0, "location is required").max(30),
+}).refine((data) => {});
 
 const CreateEventDialog = ({ categoryData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -46,8 +47,9 @@ const CreateEventDialog = ({ categoryData }) => {
     startDate: "",
     endDate: "",
     description: "",
-    location: "California",
-    image: "",
+    location: "",
+    relatedTo: "",
+    picture: "",
   };
 
   const methods = useForm({
@@ -61,7 +63,7 @@ const CreateEventDialog = ({ categoryData }) => {
       methods.getValues()
     );
     if (response.status == 200) {
-      console.log("Hallelujah!");
+      // console.log("Hallelujah!");
     }
   };
 
@@ -97,32 +99,51 @@ const CreateEventDialog = ({ categoryData }) => {
             <DrawerBody>
               <Stack spacing="24px">
                 <Box>
-                  <FormLabel htmlFor="eventname">Name of the Event</FormLabel>
-                  <Input
-                    ref={firstField}
-                    id="eventname"
-                    placeholder="Please enter event name"
-                    name="eventTitle"
-                    {...methods.register("eventTitle")}
-                  />
+                  <FormControl isRequired>
+                    <FormLabel htmlFor="eventname">Name of the Event</FormLabel>
+                    <Input
+                      ref={firstField}
+                      required
+                      id="eventname"
+                      placeholder="Please enter event name"
+                      name="eventTitle"
+                      {...methods.register("eventTitle")}
+                    />
+                  </FormControl>
                 </Box>
 
                 <Box>
-                  <FormLabel htmlFor="eventname">Event Category</FormLabel>
-                  <Select
-                    onChange={handleChange}
-                    name="categories"
-                    id="category-select"
-                    {...methods.register("eventType")}
-                  >
-                    {categoryData.map((category) => (
-                      <option key={category._id}>{category.eventType}</option>
-                    ))}
-                  </Select>
+                  <FormControl isRequired>
+                    <FormLabel htmlFor="eventname">Event Category</FormLabel>
+                    <Select
+                      onChange={handleChange}
+                      name="categories"
+                      id="category-select"
+                      {...methods.register("eventType")}
+                      required
+                    >
+                      {categoryData.map((category) => (
+                        <option key={category._id}>{category.eventType}</option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+
+                <Box>
+                  <FormControl isRequired>
+                    <FormLabel htmlFor="desc">Description</FormLabel>
+                    <Textarea
+                      id="desc"
+                      placeholder="Enter your event description here..."
+                      name="description"
+                      required
+                      {...methods.register("description")}
+                    />
+                  </FormControl>
                 </Box>
 
                 <HStack>
-                  <FormControl w="10rem">
+                  <FormControl w="10rem" isRequired>
                     <FormLabel>Start Date</FormLabel>
                     <Input
                       type="date"
@@ -134,7 +155,7 @@ const CreateEventDialog = ({ categoryData }) => {
                     />
                   </FormControl>
 
-                  <FormControl w="10rem">
+                  <FormControl w="10rem" isRequired>
                     <FormLabel>End date</FormLabel>
                     <Input
                       type="date"
@@ -145,26 +166,41 @@ const CreateEventDialog = ({ categoryData }) => {
                     />
                   </FormControl>
                 </HStack>
-                <Box>
-                  <FormLabel htmlFor="desc">Description</FormLabel>
-                  <Textarea
-                    id="desc"
-                    placeholder="Enter your event description here..."
-                    name="description"
-                    {...methods.register("description")}
-                  />
-                </Box>
 
-                <Box>
+                <HStack>
+                  <FormControl w="15rem" isRequired>
+                    <FormLabel>Location</FormLabel>
+                    <Input
+                      // ref={firstField}
+                      required
+                      id="location"
+                      placeholder="Please enter the location"
+                      name="location"
+                      {...methods.register("location")}
+                    />
+                  </FormControl>
+                  <FormControl w="20rem">
+                    <FormLabel>Related To</FormLabel>
+                    <Input
+                      // ref={firstField}
+                      id="relatedTo"
+                      placeholder="Please enter the related animal"
+                      name="relatedTo"
+                      {...methods.register("relatedTo")}
+                    />
+                  </FormControl>
+                </HStack>
+
+                {/* <Box>
                   <FormLabel htmlFor="img">
                     Upload an image of your event here
                   </FormLabel>
                   <Input
                     placeholder="Select Date and Time"
-                    size="md"
+                    size="s"
                     type="file"
                   />
-                </Box>
+                </Box> */}
               </Stack>
             </DrawerBody>
 

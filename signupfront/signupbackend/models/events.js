@@ -14,7 +14,7 @@ const eventsTemplate = new mongoose.Schema({
   },
   endDate: {
     type: Date,
-    required: false,
+    required: true,
   },
   relatedTo: {
     type: String,
@@ -22,7 +22,7 @@ const eventsTemplate = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: false,
+    required: true,
   },
   image: {
     type: String,
@@ -37,6 +37,10 @@ const eventsTemplate = new mongoose.Schema({
     default: Date.now,
   },
   Owner: {
+    type: String,
+    required: true,
+  },
+  OwnerEmail: {
     type: String,
     required: true,
   },
