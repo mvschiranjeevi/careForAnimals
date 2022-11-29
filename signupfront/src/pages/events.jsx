@@ -15,6 +15,20 @@ import {
   FormLabel,
   Spinner,
   Link,
+  MenuButton,
+  Menu,
+  IconButton,
+  MenuList,
+  MenuItem,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -33,6 +47,17 @@ import Provider from "../chakra-theme/Provider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { object, string } from "zod";
+import {
+  AddIcon,
+  CloseIcon,
+  DragHandleIcon,
+  EditIcon,
+  ExternalLinkIcon,
+  HamburgerIcon,
+  RepeatIcon,
+} from "@chakra-ui/icons";
+import { GoLocation } from "react-icons/go";
+import { BiUserPlus } from "react-icons/bi";
 
 const categoryData = () => {
   return axios
@@ -109,11 +134,13 @@ const filterSchema = object({
 });
 
 const EventsPage = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [category, setCategory] = useState(null);
   const [allEvents, setEvents] = useState(null);
   const [participate, setParticipate] = useState(null);
   const [hasEventsRefreshed, setHasEventsRefreshed] = useState(false);
-
+  const userEmail = localStorage.getItem("user");
+  console.log(userEmail);
   const handleClick = async (id, isInterested) => {
     try {
       const params = { id, isInterested };
@@ -125,6 +152,18 @@ const EventsPage = () => {
     }
   };
 
+  const seeTrue = (event) => {
+    console.log(event.OwnerEmail != userEmail);
+    return event.OwnerEmail != userEmail;
+  };
+  const readMore = (eventDes) => {
+    if (eventDes.length > 80) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   useEffect(() => {
     categoryData().then((response) => setCategory(response));
     eventData().then(async (response) => {
@@ -132,10 +171,11 @@ const EventsPage = () => {
       events = await Promise.all(
         events.map(async (event) => {
           const r = await participateData(event);
-          console.log(event.endDate);
-          if (r.length == 0) {
+          console.log(r.data[0]["participating"]);
+          if (r.data.length == 0) {
             return {
               ...event,
+              total: 0,
               startDate: new Date(event.startDate),
               endDate: new Date(event.endDate),
               interested: false,
@@ -143,9 +183,10 @@ const EventsPage = () => {
           } else {
             return {
               ...event,
+              total: r.total,
               startDate: new Date(event.startDate),
               endDate: new Date(event.endDate),
-              interested: r[0].participating,
+              interested: r.data[0]["participating"],
             };
           }
         })
@@ -154,6 +195,7 @@ const EventsPage = () => {
     });
   }, [hasEventsRefreshed]);
 
+  // console.log(allEvents);
   const defaultValues = {
     eventType: "",
     owner: "",
@@ -166,6 +208,15 @@ const EventsPage = () => {
     defaultValues,
   });
 
+  // const handleSubmit = async () => {
+  //   const response = await axios.post(
+  //     "http://localhost:4000/app/seeEvents?",
+  //     methods.getValues()
+  //   );
+  //   if (response.status == 200) {
+  //     // console.log("Hallelujah!");
+  //   }
+  // };
   if (allEvents === null) {
     return (
       <Provider>
@@ -185,7 +236,7 @@ const EventsPage = () => {
     <div>
       <Provider>
         <FormProvider {...methods}>
-          <Stack h="full" bg="gray.200">
+          <Stack h="full">
             <Box border="2px solid gray" rounded="lg" m="2rem">
               <HStack>
                 <Example />
@@ -241,25 +292,42 @@ const EventsPage = () => {
                   />
                 </FormControl>
                 <Box pt="1.8rem" pl="1.5rem">
-                  <Button
-                    size="md"
-                    onClick={() => {
-                      console.log(methods.getValues());
-                    }}
-                  >
-                    Submit
-                  </Button>
+                  <Button size="md">Submit</Button>
                 </Box>
               </HStack>
             </Box>
 
             <SimpleGrid columns={[1, 3]} spacing={10} p="2rem">
               {events.map((event) => (
-                <Card rounded="md" bg="white" key={event.name}>
+                <Card
+                  rounded="md"
+                  bg="white"
+                  borderColor={"black"}
+                  key={event.eventTitle}
+                >
+                  <div style={{ position: "absolute", top: 4, left: 390 }}>
+                    <Menu>
+                      <MenuButton
+                        as={IconButton}
+                        aria-label="Options"
+                        icon={<DragHandleIcon />}
+                        variant="outline"
+                      />
+                      <MenuList>
+                        <MenuItem icon={<EditIcon />} command="⌘T">
+                          Edit Event
+                        </MenuItem>
+                        <MenuItem icon={<CloseIcon />} command="⌘N">
+                          Delete Event
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </div>
+
                   <Image
                     objectFit="cover"
                     maxW={{ base: "100%" }}
-                    src={event.image}
+                    src={event.picture}
                     alt="Caffe Latte"
                     roundedTop="md"
                     borderBottom="0.4rem solid"
@@ -268,19 +336,83 @@ const EventsPage = () => {
 
                   <CardBody>
                     <Stack textTransform="uppercase" alignItems="flex-start">
+                      <HStack>
+                        <Text fontSize="xs">
+                          {convertDate(event.startDate)} -{" "}
+                          {convertDate(event.endDate)}
+                        </Text>
+
+                        <div
+                          style={{ position: "absolute", top: 315, left: 260 }}
+                        >
+                          <Text fontSize="xs">
+                            No of pratipants : {event.total}
+                          </Text>
+                        </div>
+                      </HStack>
+
+                      <Divider />
+                      <Heading size="md">{event.eventTitle}</Heading>
                       <Text fontSize="xs">
-                        {convertDate(event.startDate)} -{" "}
-                        {convertDate(event.endDate)}
+                        {event.description.slice(0, 80) + "  "}
+                        {readMore(event.description) && (
+                          <>
+                            <Link
+                              onClick={onOpen}
+                              color="green"
+                              textTransform="lowercase"
+                            >
+                              Read More
+                            </Link>
+                            <Modal
+                              blockScrollOnMount={false}
+                              isOpen={isOpen}
+                              onClose={onClose}
+                            >
+                              <ModalOverlay />
+                              <ModalContent>
+                                <ModalHeader>Event Description</ModalHeader>
+                                <ModalCloseButton />
+                                <ModalBody>
+                                  <Text fontWeight="bold" mb="1rem">
+                                    {event.description}
+                                  </Text>
+                                </ModalBody>
+
+                                <ModalFooter>
+                                  <Button
+                                    colorScheme="blue"
+                                    mr={3}
+                                    onClick={onClose}
+                                  >
+                                    Close
+                                  </Button>
+                                </ModalFooter>
+                              </ModalContent>
+                            </Modal>
+                          </>
+                        )}
                       </Text>
-                      <Heading size="lg">{event.name}</Heading>
-                      <Text fontSize="xs">{event.description}</Text>
                     </Stack>
                   </CardBody>
                   <Divider />
+
                   <CardFooter justify="space-between">
-                    <Text fontSize="xs">
-                      <b>Created by</b> {event.createdBy}
-                    </Text>
+                    <VStack align="stretch">
+                      <HStack>
+                        <GoLocation></GoLocation>
+                        <Text fontSize="xs">
+                          <b>Location :</b> California
+                        </Text>
+                      </HStack>
+
+                      <HStack>
+                        <BiUserPlus></BiUserPlus>
+                        <Text fontSize="xs">
+                          <b>Owner</b> {event.ownerEmail}
+                        </Text>
+                      </HStack>
+                    </VStack>
                     {event.interested ? (
                       <Button
                         variant="solid"

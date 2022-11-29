@@ -36,9 +36,9 @@ router.post("/signup", async (request, response) => {
     response.status(500).json(err);
   }
 });
-router.post("/createEvent", async (request, response) => {
+router.post("/createEvent", auth, async (request, response) => {
   try {
-    console.log(request.body);
+    const users = await signUpTemplateCopy.findOne({ _id: request.user._id });
     const eventCreate = new events({
       eventType: request.body.eventType,
       eventTitle: request.body.eventTitle,
@@ -47,8 +47,11 @@ router.post("/createEvent", async (request, response) => {
       image: request.body.image,
       location: request.body.location,
       description: request.body.description,
-      Owner: "Chiranjeevi",
+      relatedTo: request.body.relatedTo,
+      Owner: users.userName,
+      OwnerEmail: users.email,
     });
+    // console.log(eventCreate);
     eventCreate.save();
     response.status(200).json(events);
   } catch (err) {
@@ -135,10 +138,7 @@ router.post("/profile", async (request, response) => {
   const emails = request.body.email;
   try {
     signUpTemplateCopy.findOne({ email: emails }, async (err, value) => {
-      // console.log(value);
-
       if (value) {
-        // console.log("zero");
         response.status(409).send({ message: "User is already registerd" });
       } else {
         const signedUpUser = new signUpTemplateCopy({
@@ -244,7 +244,6 @@ router.get("/animalInfo", async (request, response) => {
 router.get("/getAnimals", async (request, response) => {
   try {
     animalInfo.find({}, async (req, res) => {
-      // console.log("animals", res);
       response.status(200).send(res);
     });
   } catch (err) {
@@ -289,7 +288,6 @@ router.post("/participate", auth, async (req, res) => {
       user_id: req.user._id,
     });
     console.log(participateData);
-
     if (!participateData) {
       const temp_arr = new participate({
         user_id: req.user._id,
@@ -298,15 +296,12 @@ router.post("/participate", auth, async (req, res) => {
         respondedOn: Date.now(),
       });
       const results = await temp_arr.save();
-      return res.status(200).send("Participating Succcessfully", results);
+      return res.send(results);
     } else {
       const flag = participateData.participating;
-      // console.log(status);
-      // console.log(participateData._id);
       participateData["participating"] = status;
       const results = await participateData.save();
       res.send(results);
-      console.log(participateData);
     }
   } catch (err) {
     console.log("error: ", err);
@@ -316,15 +311,24 @@ router.post("/participate", auth, async (req, res) => {
 router.get("/participation", auth, async (req, res) => {
   try {
     const id = req.query.id;
-    const eventsData = await events.find({ _id: id });
-    if (!eventsData) return res.status(400).send("Event doesn't exists");
+    const eventsData = await events.findOne({ _id: id });
 
-    const event_id = eventsData[0]._id;
+    console.log(eventsData);
+    if (!eventsData) return res.status(400).send("Event doesn't exists");
+    const event_id = eventsData._id;
+    const participateDatas = await participate.find({
+      event_id: event_id,
+    });
+
+    console.log(participateDatas);
     const participateData = await participate.find({
       event_id: event_id,
       user_id: req.user._id,
     });
-    return res.status(200).send(participateData);
+    // console.log(participateDatas.length);
+    const total = participateDatas.length;
+    // console.log(participateData);
+    return res.status(200).send({ data: participateData, total: total });
   } catch (ex) {
     return res.send(ex.message);
   }

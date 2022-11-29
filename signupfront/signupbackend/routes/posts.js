@@ -29,9 +29,9 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/create", auth, async (req, res) => {
-  console.log(req);
-  console.log(req.body);
-  console.log(req.users);
+  // console.log(req);
+  // console.log(req.body);
+  // console.log(req.users);
   const { error } = validatePost(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const tags = req.body.tags;
