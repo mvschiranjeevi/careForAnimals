@@ -12,25 +12,9 @@ import Axios from 'axios';
 
 const columns = [
   { id: 'commonName', label: 'CommonName', minWidth: 170 },
-  { id: 'sciName', label: 'ScientificName', minWidth: 100 }
+  { id: 'sciName', label: 'ScientificName', minWidth: 100 },
+  { id: 'status', label: 'Status', minWidth: 100 }
 ];
-
-  
-  const rows = [
-    {name:"African Elephant",sciname:"Loxodonta africana"},
-    // createData('African Elephant', 'Loxodonta africana'),
-    // createData('Arctic Wolf', 'Loxodonta africana'),
-    // createData('African Elephant', 'Loxodonta africana'),
-    // createData('African Elephant', 'Loxodonta africana'),
-    // createData('African Elephant', 'Loxodonta africana'),
-    // createData('African Elephant', 'Loxodonta africana'),
-    // createData('African Elephant', 'Loxodonta africana'),
-    // createData('African Elephant', 'Loxodonta africana'),
-    // createData('African Elephant', 'Loxodonta africana'),
-    // createData('African Elephant', 'Loxodonta africana'),
-    // createData('African Elephant', 'Loxodonta africana'),
-    // createData('African Elephant', 'Loxodonta africana'),
-  ];
 
 export default function AnimalsTable() {
   const [page, setPage] = React.useState(0);
@@ -38,6 +22,8 @@ export default function AnimalsTable() {
   let navigate = useNavigate()
   const [animals,setAnimals]=React.useState(null);
 
+  const rows=animals?.map(animal => ({ id: animal?.commonName, sciName: animal?.sciName, status:animal?.status }));
+     
   React.useEffect( () => {
     Axios.get(`http://localhost:4000/app/getAnimals`).then((response) => {
       setAnimals(response.data);
@@ -49,19 +35,11 @@ export default function AnimalsTable() {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  const handleClick=()=>{
-
-  }
-
   return (
     <>
-    {animals && <Paper sx={{ width: '80%', overflow: '', marginLeft:'30px', marginTop:'50px' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+    {animals && 
+    <Paper sx={{ width: '80%', overflow: '', marginLeft:'30px', marginTop:'100px' }}>
+      <TableContainer sx={{borderRadius:2}}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -69,6 +47,7 @@ export default function AnimalsTable() {
                 <TableCell
                   key={column.id}
                   align='center'
+                  sx={{bgcolor: '#b0f792'}}
                   style={{ minWidth: column.minWidth }}
                 >
                   {column.label}
@@ -82,13 +61,16 @@ export default function AnimalsTable() {
               .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                        console.log(row['commonName']);
+                    {columns.map((column,index) => {
                       const value = row[column.id];
                       return (
+                        index==0?(
                         <TableCell key={column.id} align='center' component="a" onClick={() => navigate('/animalInfo', {state:{animalName: row['commonName']}})}>
                           {value}
-                        </TableCell>
+                        </TableCell>):(
+                        <TableCell key={column.id} align='center'>
+                          {value}
+                        </TableCell>)
                       );
                     })}
                   </TableRow>
@@ -98,13 +80,12 @@ export default function AnimalsTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10]}
         component="div"
         count={animals.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Paper>}
     </>
