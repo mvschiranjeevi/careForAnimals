@@ -24,7 +24,7 @@ const eventsTemplate = new mongoose.Schema({
     type: String,
     required: false,
   },
-  picture: {
+  image: {
     type: String,
     required: false,
   },

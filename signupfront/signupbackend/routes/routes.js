@@ -44,7 +44,7 @@ router.post("/createEvent", async (request, response) => {
       eventTitle: request.body.eventTitle,
       startDate: request.body.startDate,
       endDate: request.body.endDate,
-      picture: request.body.picture,
+      image: request.body.image,
       location: request.body.location,
       description: request.body.description,
       Owner: "Chiranjeevi",

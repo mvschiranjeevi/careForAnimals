@@ -47,7 +47,7 @@ const CreateEventDialog = ({ categoryData }) => {
     endDate: "",
     description: "",
     location: "California",
-    picture: "",
+    image: "",
   };
 
   const methods = useForm({
