@@ -99,7 +99,7 @@ class App extends Component {
           <Route path="/new-post" element={<NewPost user={{}} />} />
           <Route path="/post/:id" element={<PostPage user={{}} />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/animalInfo" element={<AnimalsInfo />} />
+          <Route path="/animalInfo" element={<AnimalInfo />} />
           <Route path="/animalData" element={<AnimalTable />} />
           <Route path="/" element={<HomePage />} />
         </Routes>
