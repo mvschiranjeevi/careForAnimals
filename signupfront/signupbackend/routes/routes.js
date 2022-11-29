@@ -272,4 +272,20 @@ router.get("/getAnimals", async (request, response) => {
   }
 });
 
+router.get("/getSetOfAnimals", async (request, response) => {
+  try {
+    const data = await animalInfo.find({
+    	status: { $ne: '' }, population: { $ne: '' }
+    }).limit(9);
+    try {
+      response.send(data);
+    } catch (error) {
+      response.status(500).send(error);
+    }
+  } catch (err) {
+    console.log(err);
+    response.status(500).json(err);
+  }
+});
+
 module.exports = router;

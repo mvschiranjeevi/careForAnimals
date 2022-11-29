@@ -23,6 +23,9 @@ const AnimalSchema = new mongoose.Schema({
     default: "NA",
     required: true
   },
+  population : {
+    type: String
+  },
   height : {
     type: String
   },

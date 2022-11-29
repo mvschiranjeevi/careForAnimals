@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Stack, Heading, Text, SimpleGrid, Button } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Provider from "../chakra-theme/Provider";
 import AnimalCard from "../components/AnimalCard";
 import ScrollIntoView from "react-scroll-into-view";
@@ -8,28 +8,30 @@ import ResponsiveAppBar from "../components/navBar";
 import Footer from "../components/Footer";
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const HomePage = () => {
-  const animals = [
-    {
-      src: "assets/animals/asian_elephant.png",
-      width: "15rem",
-      height: "15rem",
-      name: "Asian Elephant",
-    },
-    {
-      src: "assets/animals/owl.jpg",
-      width: "15rem",
-      height: "15rem",
-      name: "Owl",
-    },
-    {
-      src: "assets/animals/wolf.jpg",
-      width: "15rem",
-      height: "15rem",
-      name: "Arctic Wolf",
-    },
-  ];
+	const [isLoaded, setIsLoaded] = useState(false);
+	const [animals, setAnimals] = useState([]);
+
+	useEffect(() => {
+		getAnimalData()
+  }, []);
+
+  async function getAnimalData() {
+  	try{
+  		const response = await axios.get('http://localhost:4000/app/getSetOfAnimals', {
+  			params: {}}).then(
+  				function (response) {
+  					setAnimals(response.data);
+  					setIsLoaded(true);
+  					console.log(response);
+  				}
+  			);
+  	} catch(exception) {
+  		console.log(exception)
+  	}
+  }
   let navigate = useNavigate()
 
   return (
@@ -112,12 +114,20 @@ const HomePage = () => {
               other species or offers the opportunity to protect whole
               landscapes or marine areas.
             </Text>
-            <SimpleGrid columns={3} pt="4rem">
-              {animals.map((animal) => (
-                <AnimalCard key={animal.name} {...animal} />
-              ))}
-            </SimpleGrid>
-            <span style={{alignContent:'center'}} onClick = {() => navigate('/animalData')}>View More <KeyboardArrowDownOutlinedIcon/></span>
+            { isLoaded ? (
+            	<Stack justify="center" alignItems="center" spacing="1" pt="4rem">
+            	<SimpleGrid columns={3} pt="4rem">
+								{animals.map((animal) => (
+									<AnimalCard key={animal.commonName} {...animal} />
+								))}
+							</SimpleGrid>
+							<span></span>
+							<span style={{alignContent:'center'}} onClick = {() => navigate('/animalData')}>View More<KeyboardArrowDownOutlinedIcon/></span>
+							<span></span>
+							</Stack>
+            ) : (
+							<> </>
+						)}
           </Stack>
         </Stack>
         
