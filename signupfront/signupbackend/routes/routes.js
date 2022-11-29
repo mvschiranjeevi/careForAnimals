@@ -4,23 +4,21 @@ const signUpTemplateCopy = require("../models/signUpModels");
 const events = require("../models/events");
 const eventType = require("../models/eventType");
 const animalInfo = require("../models/animal");
+const participate = require("../models/particpate");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const { response } = require("express");
 const config = require("../config/default.json");
+const auth = require("../middleware/auth");
 
 router.post("/signup", async (request, response) => {
   const saltPassword = await bcrypt.genSalt(10);
   const securePassword = await bcrypt.hash(request.body.password, saltPassword);
   const emails = request.body.email;
-  console.log(emails);
   try {
     signUpTemplateCopy.findOne({ email: emails }, async (err, value) => {
-      // console.log(value);
-
       if (value) {
-        // console.log("zero");
         response.status(409).send({ message: "User is already registerd" });
       } else {
         const signedUpUser = new signUpTemplateCopy({
@@ -40,14 +38,16 @@ router.post("/signup", async (request, response) => {
 });
 router.post("/createEvent", async (request, response) => {
   try {
+    console.log(request.body);
     const eventCreate = new events({
       eventType: request.body.eventType,
       eventTitle: request.body.eventTitle,
       startDate: request.body.startDate,
       endDate: request.body.endDate,
-      picture: request.body.pciture,
+      picture: request.body.picture,
       location: request.body.location,
       description: request.body.description,
+      Owner: "Chiranjeevi",
     });
     eventCreate.save();
     response.status(200).json(events);
@@ -79,7 +79,6 @@ router.post("/login", async (request, response) => {
   const email = request.body.email;
   const password = request.body.password;
   signUpTemplateCopy.findOne({ email: email }, async (err, value) => {
-    console.log(value);
     if (value) {
       if (await bcrypt.compare(password, value.password)) {
         const id = value.id;
@@ -112,7 +111,7 @@ router.post("/forgot", async (request, response) => {
   try {
     signUpTemplateCopy.findOne({ email: emails }, async (err, value) => {
       if (value) {
-        console.log(securePassword, emails, value._id);
+        // console.log(securePassword, emails, value._id);
         await signUpTemplateCopy.updateOne(
           { _id: value._id },
           {
@@ -136,10 +135,10 @@ router.post("/profile", async (request, response) => {
   const emails = request.body.email;
   try {
     signUpTemplateCopy.findOne({ email: emails }, async (err, value) => {
-      console.log(value);
+      // console.log(value);
 
       if (value) {
-        console.log("zero");
+        // console.log("zero");
         response.status(409).send({ message: "User is already registerd" });
       } else {
         const signedUpUser = new signUpTemplateCopy({
@@ -188,7 +187,6 @@ router.get("/seeEvents", async (request, response) => {
     // }
 
     events.find({}, async (err, value) => {
-      console.log(value);
       response.send(value);
     });
   } catch (err) {
@@ -200,25 +198,8 @@ router.get("/seeEvents", async (request, response) => {
 router.get("/getCategories", async (request, response) => {
   try {
     eventType.find({}, async (err, value) => {
-      console.log("Get cat", value);
       response.status(200).send(value);
     });
-  } catch (err) {
-    console.log(err);
-    response.status(500).json(err);
-  }
-});
-
-router.post("/createEvent", async (request, response) => {
-  try {
-    // const newEvent = new eventType({
-    //   eventName: request.body.fullName,
-    //   userName: request.body.userName,
-    //   email: request.body.email,
-    //   password: securePassword,
-    // });
-    // newEvent.save();
-    // response.status(200).json(eventType);
   } catch (err) {
     console.log(err);
     response.status(500).json(err);
@@ -238,7 +219,7 @@ router.post("/tags", async (req, res) => {
   });
   try {
     await tag.save();
-    console.log("tag created");
+    // console.log("tag created");
     res.send(_.pick(tag, ["_id", "name", "used"]));
   } catch (err) {
     console.log("err", err);
@@ -263,7 +244,7 @@ router.get("/animalInfo", async (request, response) => {
 router.get("/getAnimals", async (request, response) => {
   try {
     animalInfo.find({}, async (req, res) => {
-      console.log("animals", res);
+      // console.log("animals", res);
       response.status(200).send(res);
     });
   } catch (err) {
@@ -274,9 +255,12 @@ router.get("/getAnimals", async (request, response) => {
 
 router.get("/getSetOfAnimals", async (request, response) => {
   try {
-    const data = await animalInfo.find({
-    	status: { $ne: '' }, population: { $ne: '' }
-    }).limit(9);
+    const data = await animalInfo
+      .find({
+        status: { $ne: "" },
+        population: { $ne: "" },
+      })
+      .limit(9);
     try {
       response.send(data);
     } catch (error) {
@@ -285,6 +269,64 @@ router.get("/getSetOfAnimals", async (request, response) => {
   } catch (err) {
     console.log(err);
     response.status(500).json(err);
+  }
+});
+
+router.post("/participate", auth, async (req, res) => {
+  try {
+    const id = req.query.id;
+    const status = req.query.status;
+
+    const eventsData = await events.findById(id);
+
+    if (!eventsData) return res.status(400).send("Event doesn't exists");
+
+    // if ((eventsData.owner = req.user._id))
+    //   return res.status(400).send("You are the owner !!");
+
+    const participateData = await participate.findOne({
+      event_id: eventsData._id,
+      user_id: req.user._id,
+    });
+    console.log(participateData);
+
+    if (!participateData) {
+      const temp_arr = new participate({
+        user_id: req.user._id,
+        event_id: eventsData._id,
+        participating: true,
+        respondedOn: Date.now(),
+      });
+      const results = await temp_arr.save();
+      return res.status(200).send("Participating Succcessfully", results);
+    } else {
+      const flag = participateData.participating;
+      // console.log(status);
+      // console.log(participateData._id);
+      participateData["participating"] = status;
+      const results = await participateData.save();
+      res.send(results);
+      console.log(participateData);
+    }
+  } catch (err) {
+    console.log("error: ", err);
+  }
+});
+
+router.get("/participation", auth, async (req, res) => {
+  try {
+    const id = req.query.id;
+    const eventsData = await events.find({ _id: id });
+    if (!eventsData) return res.status(400).send("Event doesn't exists");
+
+    const event_id = eventsData[0]._id;
+    const participateData = await participate.find({
+      event_id: event_id,
+      user_id: req.user._id,
+    });
+    return res.status(200).send(participateData);
+  } catch (ex) {
+    return res.send(ex.message);
   }
 });
 
