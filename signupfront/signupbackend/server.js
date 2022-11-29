@@ -11,23 +11,13 @@ const users = require("./routes/users");
 const posts = require("./routes/posts");
 const tags = require("./routes/tags");
 const replies = require("./routes/replies");
+const participate = require("./routes/participation");
+
 const config = require("config");
 
 dotenv.config();
 
 app.use(cors());
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-//   );
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
 
 mongoose.connect(process.env.DB_PATH, (err) => {
   if (err) console.log(err);
@@ -37,9 +27,6 @@ mongoose.connect(process.env.DB_PATH, (err) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(bodyParser.json());
-// mongoose.connect(process.env.DATABASE_ACCESS, () =>
-//   console.log("Database Connected")
-// );
 
 app.get("/", (req, res) => {
   res.send("request successfully sent!");
@@ -47,6 +34,7 @@ app.get("/", (req, res) => {
 app.use("/users", users);
 app.use("/posts", posts);
 app.use("/tags", tags);
+// app.use("/participate", participate);
 app.use("/reply", replies);
 app.use(express.json());
 app.use("/app", routesUrls);

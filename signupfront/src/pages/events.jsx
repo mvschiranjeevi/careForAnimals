@@ -48,6 +48,35 @@ const eventData = () => {
   });
 };
 
+const PostparticipateData = ({ id, isInterested }) => {
+  return axios
+    .post(
+      `http://localhost:4000/app/participate?id=${id}&status=${isInterested}`
+    )
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    });
+};
+const participateData = (event) => {
+  return axios
+    .get(`http://localhost:4000/app/participation?id=${event._id}`)
+    .then((response) => {
+      // console.log(response.data);
+      return response.data;
+    });
+};
+
+const participateFunc = async (event) => {
+  const data = await participateData(event);
+  console.log(data);
+  if (data === null) {
+    return false;
+  } else {
+    return data["participating"];
+  }
+};
+
 const convertDate = (date) => {
   const monthArray = [
     "Jan",
@@ -82,11 +111,48 @@ const filterSchema = object({
 const EventsPage = () => {
   const [category, setCategory] = useState(null);
   const [allEvents, setEvents] = useState(null);
+  const [participate, setParticipate] = useState(null);
+  const [hasEventsRefreshed, setHasEventsRefreshed] = useState(false);
+
+  const handleClick = async (id, isInterested) => {
+    try {
+      const params = { id, isInterested };
+      const response = await PostparticipateData({ id, isInterested });
+      setHasEventsRefreshed((hasEventsRefreshed) => !hasEventsRefreshed);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     categoryData().then((response) => setCategory(response));
-    eventData().then((response) => setEvents(response));
-  }, []);
+    eventData().then(async (response) => {
+      let events = response;
+      events = await Promise.all(
+        events.map(async (event) => {
+          const r = await participateData(event);
+          console.log(event.endDate);
+          if (r.length == 0) {
+            return {
+              ...event,
+              startDate: new Date(event.startDate),
+              endDate: new Date(event.endDate),
+              interested: false,
+            };
+          } else {
+            return {
+              ...event,
+              startDate: new Date(event.startDate),
+              endDate: new Date(event.endDate),
+              interested: r[0].participating,
+            };
+          }
+        })
+      );
+      setEvents(events);
+    });
+  }, [hasEventsRefreshed]);
 
   const defaultValues = {
     eventType: "",
@@ -110,15 +176,7 @@ const EventsPage = () => {
       </Provider>
     );
   }
-
-  const events = allEvents.map((event) => {
-    return {
-      ...event,
-      startDate: new Date(event.startDate),
-      endDate: new Date(event.endDate),
-    };
-  });
-
+  const events = allEvents;
   if (!category) {
     return <Spinner />;
   }
@@ -224,10 +282,16 @@ const EventsPage = () => {
                       <b>Created by</b> {event.createdBy}
                     </Text>
                     {event.interested ? (
-                      <Button variant="solid">Participating!</Button>
+                      <Button
+                        variant="solid"
+                        onClick={() => handleClick(event._id, false)}
+                      >
+                        Participating!
+                      </Button>
                     ) : (
                       <Button
                         variant="solid"
+                        onClick={() => handleClick(event._id, true)}
                         // @ts-ignore
                         variant="inverse"
                       >
