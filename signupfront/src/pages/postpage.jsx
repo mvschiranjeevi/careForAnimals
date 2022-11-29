@@ -10,8 +10,13 @@ import ResponsiveAppBar from "../components/navBar";
 import config from "../utils/config.json";
 import PostReply from "./createReply";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Spinner, Stack } from "@chakra-ui/react";
+import Provider from "../chakra-theme/Provider";
 
 class PostPage extends Component {
+  token = localStorage.getItem("token");
+
   state = {
     post: {
       description: "",
@@ -86,6 +91,19 @@ class PostPage extends Component {
     const { user } = this.props;
     return (
       <div>
+        {!this.token && (
+          <Provider>
+            <Stack
+              boxSize="full"
+              h="100vh"
+              justify="center"
+              alignItems="center"
+            >
+              <Spinner size="xl" />
+              <Link href="/login">You may not be logged in</Link>
+            </Stack>
+          </Provider>
+        )}
         {/* <ResponsiveAppBar /> */}
         <ToastContainer />
         <div className="container col-lg-6 shadow-lg p-3 mt-5 bg-body rounded">
