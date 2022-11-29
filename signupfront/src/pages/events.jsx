@@ -240,9 +240,8 @@ const EventsPage = () => {
             </SimpleGrid>
           </Stack>
         </FormProvider>
+        <CreateEventDialog categoryData={category} />
       </Provider>
-
-      <CreateEventDialog categoryData={category} />
     </div>
   );
 };
