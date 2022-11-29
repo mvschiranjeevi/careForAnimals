@@ -63,7 +63,6 @@ const Profile = () => {
   }
   return (
     <div>
-      <ResponsiveAppBar />
       {!profile ? (
         <Provider>
           <Spinner />

@@ -53,8 +53,7 @@ function ResponsiveAppBar() {
   };
 
   const pages = [
-    { name: "Events", link: "/events" },
-    { name: "About", link: "/about" },
+    { name: "Events", link: "/events" }
   ];
   const logpages = [
     { name: "My Events", link: "/events" },
