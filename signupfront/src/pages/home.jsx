@@ -6,6 +6,8 @@ import AnimalCard from "../components/AnimalCard";
 import ScrollIntoView from "react-scroll-into-view";
 import ResponsiveAppBar from "../components/navBar";
 import Footer from "../components/Footer";
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const animals = [
@@ -28,6 +30,7 @@ const HomePage = () => {
       name: "Arctic Wolf",
     },
   ];
+  let navigate = useNavigate()
 
   return (
     <div>
@@ -114,8 +117,10 @@ const HomePage = () => {
                 <AnimalCard key={animal.name} {...animal} />
               ))}
             </SimpleGrid>
+            <span style={{alignContent:'center'}} onClick = {() => navigate('/animalData')}>View More <KeyboardArrowDownOutlinedIcon/></span>
           </Stack>
         </Stack>
+        
         <Footer/>
       </Provider>
     </div>
