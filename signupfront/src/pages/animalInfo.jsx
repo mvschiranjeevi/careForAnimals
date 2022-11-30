@@ -1,257 +1,255 @@
-import { Stack } from "@chakra-ui/react";
+// @ts-nocheck
+import {
+  Heading,
+  HStack,
+  Image,
+  Stack,
+  Text,
+  VStack,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Link,
+  Button,
+  useDisclosure,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import { bgcolor, Box } from "@mui/system";
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
-import InsightsIcon from '@mui/icons-material/Insights';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
-import Button from '@mui/material/Button';
-import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
-import PetsIcon from '@mui/icons-material/Pets';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import {GiBodyHeight,GiThermometerScale,GiAnimalSkull} from 'react-icons/gi';
-import {FaWeight} from 'react-icons/fa';
-import {RiNumbersLine} from 'react-icons/ri'
+import Provider from "../chakra-theme/Provider";
+import { Divider } from "@chakra-ui/react";
+import { GiWeight, GiBodyHeight } from "react-icons/gi";
+import { RxWidth } from "react-icons/rx";
+import { AiOutlineNumber } from "react-icons/ai";
+import { TiSortAlphabetically } from "react-icons/ti";
+import { TbTrees } from "react-icons/tb";
+import Footer from "../components/Footer";
+import Maps from "./maps";
 
-import CardActions from '@mui/material/CardActions';
-import { red } from "@mui/material/colors";
-import { MapsComponent, LayersDirective, LayerDirective, Zoom, MarkersDirective, Legend,
-    NavigationLine, NavigationLinesDirective, MarkerDirective,
-    MapsTooltip, Marker, Inject } from '@syncfusion/ej2-react-maps';
+const AnimalsInfo = (props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [animalData, setAnimalData] = useState({});
+  const location = useLocation();
 
-const ExpandMore = styled((props) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-  })(({ theme, expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  }));
-
-const AnimalsInfo = props => {
-	const [isLoaded, setIsLoaded] = useState(false);
-	const [animalData, setAnimalData] = useState({});
-	const location = useLocation();
-
-	useEffect(() => {
-		getAnimalInfo(location.state.animalName);
+  useEffect(() => {
+    getAnimalInfo(location.state.animalName);
   }, []);
 
   async function getAnimalInfo(name) {
-  	try {
-  		const response = await axios.get('http://localhost:4000/app/animalInfo', {
-  			params: { animalName: name }}).then(
-  				function (response) {
-  					setAnimalData(response.data[0]);
-  					setIsLoaded(true);
-  					console.log(response);
-  				}
-  			);
-  	} catch(exception) {
-  		console.log(exception)
-  	}
+    try {
+      const response = await axios
+        .get("http://localhost:4000/app/animalInfo", {
+          params: { animalName: name },
+        })
+        .then(function (response) {
+          setAnimalData(response.data[0]);
+          setIsLoaded(true);
+          console.log(response);
+        });
+    } catch (exception) {
+      console.log(exception);
+    }
   }
+
+  const readMore = (description) => {
+    if (description.length > 80) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  const checkEmpty = (value) => {
+    // const height = value?.length;
+    // console.log(height);
+    if (value == null || value.length == 0) {
+      console.log(true);
+      return true;
+    } else {
+      console.log(false);
+      return false;
+    }
+  };
 
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  // console.log(animalData?.description.length);
 
   return (
-  	<div style={{padding:'30px'}}>
-        <Grid container spacing={2}>
-            <Grid item xs={5}>
-                <Item height="100%">
-                    <Stack bgImage={animalData?.imageUrl}
-                        bgPosition="center"
-                        bgRepeat="no-repeat"
-                        bgSize="cover"
-                        h="35rem"
-                        w="full"
-                        justify="center"
-                        alignItems="center"
-                        id="hero">
-                    </Stack>
-                </Item>
-            </Grid>
-            <Grid item xs={7}>
-				<Stack>
-					<Box >
-						<Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-							{animalData?.description}
-						</Typography>
-					</Box>
-					<Stack direction='row' >
-						<Box style={{marginTop:'0px'}}>
-							<Card variant="outlined" sx={{width: 175, height:190}}>
-								<CardContent>
-									<Typography variant="h5" component="div">
-										Height  <GiBodyHeight style={{marginTop:"-5px"}}/>
-									</Typography>
-									<br/>
-									<Typography variant="h7">
-										{animalData?.height}
-									</Typography>
-								</CardContent>
-							</Card>
-						</Box>
-						<Box>
-							<Card variant="outlined" sx={{width: 175, height:190}}>
-								<CardContent>
-									<Typography variant="h5" component="div">
-										Weight <FaWeight style={{marginTop:"-6px"}}/>
-									</Typography>
-									<br/>
-									<Typography variant="h7">
-										{animalData?.weight}
-									</Typography>
-								</CardContent>
-							</Card>
-						</Box>
-						<Box>
-							<Card variant="outlined" sx={{width: 175, height:190}}>
-								<CardContent>
-									<Typography variant="h5" component="div">
-										Length<GiThermometerScale style={{marginTop:"-6px"}}/>
-									</Typography>
-									<br/>
-									<Typography variant="h7">
-										{animalData?.length}
-									</Typography>
-								</CardContent>
-							</Card>
-						</Box>
-						<Box>
-							<Card variant="outlined" sx={{width: 175, height:190}}>
-								<CardContent>
-									<Typography variant="h5" component="div">
-										Population<RiNumbersLine/>
-									</Typography>
-									<br/>
-									<Typography variant="h7">
-										{animalData?.population}
-									</Typography>
-								</CardContent>
-							</Card>
-						</Box>
-					</Stack>
-				</Stack>
-            </Grid>		
-        </Grid>	
-		<br/>
-		<Grid container spacing={2}>
-			<Grid item xs={5}>
-				<Box>
-					<Card variant="outlined" sx={{height:'max-content'}} >
-					<CardContent>
-					<Typography variant="h5" component="div">
-					    <div>World Map</div>
-                    </Typography>
-                    </CardContent>
-					<CardContent sx={{position: 'sticky', overflowY: 'scroll', overflowX: 'scroll'}}>
-                    <MapsComponent id="maps"  zoomSettings={{ zoomFactor: 0}}
-					        legendSettings={{
-                                visible: true,
-                                type: 'Markers',
-                                useMarkerShape: true,
-                                toggleLegendSettings: {
-                                    enable: true,
-                                    applyShapeSettings: false,
-                                    border: {
-                                        color: 'green',
-                                        width: 2,
-                                    },
-                                },
-                            }}>
-					    <Inject services={[Marker, Legend, MapsTooltip]}/>
-                        <LayersDirective>
-                            <LayerDirective urlTemplate='https://tile.openstreetmap.org/level/tileX/tileY.png'>
-                                <MarkersDirective>
-                                    <MarkerDirective visible={true} height={20} width={20} animationDuration={0}
-                                    tooltipSettings={{
-                                        visible: true,
-                                        valuePath: 'name'
-                                    }}
-                                    dataSource={[
-                                        {
-                                            latitude: 34.060620,
-                                            longitude: -118.330491,
-                                            name: "California"
-                                        },
-                                        {
-                                            latitude: 40.724546,
-                                            longitude: -73.850344,
-                                            name: "New York"
-                                        }
-                                    ]}  shapeValuePath="shape"  legendText="name"/>
-                                </MarkersDirective>
-                            </LayerDirective>
-                        </LayersDirective>
-                    </MapsComponent>
-					<br/>
-					</CardContent>
-					</Card>
-				</Box>
-			</Grid>
-			<Grid item xs={7}>
-				<Box>
-					<Card variant="outlined" sx={{height:'max-content'}} style={{ width: '100%'}}>
-					<CardContent>
-					<Typography variant="h5" component="div">
-					Description
-					</Typography>
-					<br/>
-					<Typography variant="h7">
-						{animalData?.description}
-					</Typography>
-					<br/>
-					<br/>
-					<Typography variant="h5" component="div">
-					Habitat
-					</Typography>
-					<br/>
-					<Typography variant="h7">
-						{animalData?.habitat}
-					</Typography>
-					<br/>
-					<br/>
-					<Typography variant="h5" component="div">
-					Places
-					</Typography>
-					<br/>
-					<Typography variant="h7">
-						{animalData?.places}
-					</Typography>
-					</CardContent>
-					</Card>
-				</Box>
+    <>
+      <Provider>
+        <HStack
+          bg="gray.800"
+          // bgImage={animalData?.imageUrl}
+          // // bgPosition="center"
+          // bgRepeat="no-repeat"
+          // // bgSize="cover"
+          // h="30rem"
+          // w="full"
+          // zIndex="-2"
+          // // justify="center"
+          // alignItems="center"
+          // m="1rem"
+          // rounded="1rem"
+          boxShadow="lg"
+          border="2px solid"
+          borderColor-="gray.600"
+          alignItems="flex-start"
+          spacing="4"
+        >
+          <Image src={animalData?.imageUrl} h="30rem" roundedLeft="1rem" />
+          <Stack h="full" pt="2rem" pr="2rem" color="white">
+            <Heading size="lg">{animalData.commonName}</Heading>
+            {/* <Text>{animalData.description}</Text> */}
 
-			</Grid>
-		</Grid>				
-    </div>
+            <Text fontSize="sm">
+              {animalData.description + " "}
+              {true && (
+                <>
+                  <Link onClick={onOpen} color="green">
+                    <b> Read More</b>
+                  </Link>
+                  <Modal
+                    blockScrollOnMount={false}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                  >
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Animal Description</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <Text fontWeight="bold" mb="1rem">
+                          {animalData.description}
+                        </Text>
+                      </ModalBody>
+
+                      <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                          Close
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
+                </>
+              )}
+            </Text>
+
+            <Divider />
+
+            <VStack spacing={8} alignItems="start">
+              <Text fontSize="3xl">Statistics</Text>
+              <HStack alignItems="start" spacing={20}>
+                <VStack spacing={0} alignItems="start">
+                  <HStack>
+                    <GiWeight></GiWeight>
+                    <Text>
+                      <b>Weight</b>
+                    </Text>
+                  </HStack>
+
+                  {checkEmpty(animalData?.weight) ? (
+                    <Text>Not Available</Text>
+                  ) : (
+                    <Text>{animalData.weight} </Text>
+                  )}
+                </VStack>
+
+                <VStack spacing={0} alignItems="start">
+                  <HStack>
+                    <GiBodyHeight></GiBodyHeight>
+                    <Text>
+                      <b>Height</b>
+                    </Text>
+                  </HStack>
+
+                  {checkEmpty(animalData?.height) ? (
+                    <Text>Not Available</Text>
+                  ) : (
+                    <Text>{animalData.height} </Text>
+                  )}
+                </VStack>
+
+                <VStack spacing={0} alignItems="start">
+                  <HStack>
+                    <RxWidth></RxWidth>
+                    <Text>
+                      <b>Length</b>
+                    </Text>
+                  </HStack>
+
+                  {checkEmpty(animalData?.length) ? (
+                    <Text>Not Available</Text>
+                  ) : (
+                    <Text>{animalData.length} </Text>
+                  )}
+                </VStack>
+
+                <VStack spacing={0} alignItems="start">
+                  <HStack>
+                    <AiOutlineNumber></AiOutlineNumber>
+                    <Text>
+                      <b>Population</b>
+                    </Text>
+                  </HStack>
+
+                  {checkEmpty(animalData?.population) ? (
+                    <Text>Not Available</Text>
+                  ) : (
+                    <Text>{animalData.population} </Text>
+                  )}
+                </VStack>
+              </HStack>
+
+              <HStack alignItems="start" spacing={20}>
+                <VStack spacing={0} alignItems="start">
+                  <HStack>
+                    <TiSortAlphabetically></TiSortAlphabetically>
+                    <Text>
+                      <b>Scientific Name</b>
+                    </Text>
+                  </HStack>
+
+                  {checkEmpty(animalData?.sciName) ? (
+                    <Text>Not Available</Text>
+                  ) : (
+                    <Text>{animalData.sciName} </Text>
+                  )}
+                </VStack>
+
+                <VStack spacing={0} alignItems="start">
+                  <HStack>
+                    <TbTrees></TbTrees>
+                    <Text>
+                      <b>Habitats</b>
+                    </Text>
+                  </HStack>
+
+                  {checkEmpty(animalData?.habitats) ? (
+                    <Text>Not Available</Text>
+                  ) : (
+                    <Text>{animalData.habitats} </Text>
+                  )}
+                </VStack>
+              </HStack>
+            </VStack>
+          </Stack>
+        </HStack>
+      </Provider>
+      <Maps />
+      <Provider>
+        <Divider />
+        <Footer />
+      </Provider>
+    </>
   );
 };
 
