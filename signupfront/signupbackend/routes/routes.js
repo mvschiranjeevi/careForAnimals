@@ -348,9 +348,6 @@ router.post("/participate", auth, async (req, res) => {
 
     if (!eventsData) return res.status(400).send("Event doesn't exists");
 
-    // if ((eventsData.owner = req.user._id))
-    //   return res.status(400).send("You are the owner !!");
-
     const participateData = await participate.findOne({
       event_id: eventsData._id,
       user_id: req.user._id,
@@ -385,10 +382,10 @@ router.get("/participation", auth, async (req, res) => {
     if (!eventsData) return res.status(400).send("Event doesn't exists");
     const event_id = eventsData._id;
     const participateDatas = await participate.find({
+      participating: true,
       event_id: event_id,
     });
 
-    // console.log(participateDatas);
     const participateData = await participate.find({
       event_id: event_id,
       user_id: req.user._id,
