@@ -57,9 +57,22 @@ const AnimalsInfo = (props) => {
           params: { animalName: name },
         })
         .then(function (response) {
-          setAnimalData(response.data[0]);
-          setIsLoaded(true);
-          console.log(response);
+        	if(response.data.length !== 0){
+        		const animal = response.data[0];
+        		const places = JSON.parse(animal.places[0])
+        		animal['placeData'] = []
+        		if(animal.places.length !== 0){
+        			for(let index in places){
+        				animal['placeData'].push({
+        					"name" : places[index][0],
+        					"latitude" : places[index][1],
+        					"longitude" : places[index][2]
+        				})
+        			}
+        		}
+        		setAnimalData(animal);
+						setIsLoaded(true);
+        	}
         });
     } catch (exception) {
       console.log(exception);
@@ -90,9 +103,10 @@ const AnimalsInfo = (props) => {
               overflowX: "scroll",
             }}
           >
-            <MapsComponent
+          { isLoaded ? (
+          	<MapsComponent
               id="maps"
-              zoomSettings={{ zoomFactor: 0 }}
+              zoomSettings={{ zoomFactor: 2}}
               legendSettings={{
                 visible: true,
                 type: "Markers",
@@ -120,18 +134,7 @@ const AnimalsInfo = (props) => {
                         visible: true,
                         valuePath: "name",
                       }}
-                      dataSource={[
-                        {
-                          latitude: 34.06062,
-                          longitude: -118.330491,
-                          name: "California",
-                        },
-                        {
-                          latitude: 40.724546,
-                          longitude: -73.850344,
-                          name: "New York",
-                        },
-                      ]}
+											dataSource={animalData?.placeData}
                       shapeValuePath="shape"
                       legendText="name"
                     />
@@ -139,6 +142,9 @@ const AnimalsInfo = (props) => {
                 </LayerDirective>
               </LayersDirective>
             </MapsComponent>
+          ) : (
+							<> </>
+					)}
             <br />
           </CardContent>
         </Card>

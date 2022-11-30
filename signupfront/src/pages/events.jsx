@@ -253,7 +253,7 @@ const EventsPage = () => {
       <Provider>
         <Stack boxSize="full" h="100vh" justify="center" alignItems="center">
           <Spinner size="xl" />
-          <Link href="/login">You may not be logged in</Link>
+          <Link href="/login"> Please Login to check the events </Link>
         </Stack>
       </Provider>
     );

@@ -115,7 +115,7 @@ const AnimalsInfo = (props) => {
               {true && (
                 <>
                   <Link onClick={onOpen} color="green">
-                    <b> Read More</b>
+                    <b> Read Why they Matter</b>
                   </Link>
                   <Modal
                     blockScrollOnMount={false}
@@ -124,11 +124,11 @@ const AnimalsInfo = (props) => {
                   >
                     <ModalOverlay />
                     <ModalContent>
-                      <ModalHeader>Animal Description</ModalHeader>
+                      <ModalHeader>Why they matter</ModalHeader>
                       <ModalCloseButton />
                       <ModalBody>
                         <Text fontWeight="bold" mb="1rem">
-                          {animalData.description}
+                          {animalData?.matterText}
                         </Text>
                       </ModalBody>
 
