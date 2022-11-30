@@ -59,6 +59,15 @@ router.post("/createEvent", auth, async (request, response) => {
     response.status(500).json(err);
   }
 });
+router.delete("/deleteEvent",auth,async(req,res)=>{
+  const data=req.query.eventTitle;
+  try{
+    events.deleteOne({eventTitle:data},async(res)=>{
+      console.log(res);
+    })}catch(err){
+      console.log(err);
+    }
+});
 const verifyJWT = (request, response, next) => {
   const token = request.header("x-access-token");
   if (!token) {

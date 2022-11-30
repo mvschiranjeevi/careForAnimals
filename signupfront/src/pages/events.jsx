@@ -91,6 +91,13 @@ const participateData = (event) => {
     });
 };
 
+const deleteEvent=(event)=>{
+  return axios.delete(`http://localhost:4000/app/deleteEvent?eventTitle=${event.eventTitle}`)
+  .then((resp)=>{
+    console.log(resp.data);
+  })
+}
+
 const participateFunc = async (event) => {
   const data = await participateData(event);
   console.log(data);
@@ -315,10 +322,10 @@ const EventsPage = () => {
                         variant="outline"
                       />
                       <MenuList>
-                        <MenuItem icon={<EditIcon />} command="⌘T">
+                        <MenuItem icon={<EditIcon />}  command="⌘T">
                           Edit Event
                         </MenuItem>
-                        <MenuItem icon={<CloseIcon />} command="⌘N">
+                        <MenuItem icon={<CloseIcon />} onClick={()=>{deleteEvent(event)}} command="⌘N">
                           Delete Event
                         </MenuItem>
                       </MenuList>
