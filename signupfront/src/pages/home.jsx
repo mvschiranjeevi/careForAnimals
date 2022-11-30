@@ -104,7 +104,7 @@ const HomePage = () => {
             <Heading fontSize="3xl" color="white">
               PROTECTING WILDLIFE FOR A HEALTHY PLANET
             </Heading>
-            <Button>Learn More</Button>
+            <Button onClick = {() => navigate('/dashboard')}>Discussion Forum</Button>
           </Stack>
           <Stack justify="center" alignItems="center" spacing="4" pt="4rem">
             <Text w="30rem">
