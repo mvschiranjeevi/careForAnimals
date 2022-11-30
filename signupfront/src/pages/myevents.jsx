@@ -53,11 +53,9 @@ const categoryData = () => {
 
 const eventData = () => {
   var user = localStorage.getItem("user_id");
-  return axios
-    .get(`http://localhost:4000/app/seeEvent?user=${user}`)
-    .then((response) => {
-      return response.data;
-    });
+  return axios.get(`http://localhost:4000/app/seeEvent`).then((response) => {
+    return response.data;
+  });
 };
 
 const PostparticipateData = ({ id, isInterested }) => {
@@ -207,12 +205,13 @@ const EventsPage = () => {
     resolver: zodResolver(filterSchema),
     defaultValues,
   });
-  if (allEvents === null) {
+
+  if (allEvents.length === 0) {
     return (
       <Provider>
         <Stack boxSize="full" h="100vh" justify="center" alignItems="center">
           <Spinner size="xl" />
-          <Link href="/login">You may not be logged in</Link>
+          <Link href="/login">There are no events for you </Link>
         </Stack>
       </Provider>
     );
