@@ -44,6 +44,15 @@ const AnimalSchema = new mongoose.Schema({
   places : {
     type: Array
   },
+  matterText : {
+  	type: String
+  },
+  matterImagePrimary : {
+		type: String
+  },
+  matterImageSecondary : {
+		type: String
+  },
 });
 
 const Animal = mongoose.model("Animal", AnimalSchema, 'animal_info');
