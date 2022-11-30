@@ -29,7 +29,6 @@ import {
   ModalFooter,
   useDisclosure,
   VStack,
-  
 } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -92,20 +91,30 @@ const participateData = (event) => {
     });
 };
 
-const deleteEvent=(event)=>{
-  return axios.delete(`http://localhost:4000/app/deleteEvent?eventTitle=${event.eventTitle}`)
-  .then((resp)=>{
-    console.log(resp.data);
-  })
-}
+const deleteEvent = (event) => {
+  return axios
+    .delete(
+      `http://localhost:4000/app/deleteEvent?eventTitle=${event.eventTitle}`
+    )
+    .then((resp) => {
+      window.location.reload();
 
-const updateEvent=(event,obj)=>{
-  console.log("OBJ:",obj);
-  return axios.put(`http://localhost:4000/app/updateEvent?eventTitle=${event.eventTitle}`,obj)
-  .then((resp)=>{
-    console.log(resp.data);
-  })
-}
+      console.log(resp.data);
+    });
+};
+
+const updateEvent = (event, obj) => {
+  console.log("OBJ:", obj);
+  return axios
+    .put(
+      `http://localhost:4000/app/updateEvent?eventTitle=${event.eventTitle}`,
+      obj
+    )
+    .then((resp) => {
+      window.location.reload();
+      console.log(resp.data);
+    });
+};
 
 const participateFunc = async (event) => {
   const data = await participateData(event);
@@ -154,16 +163,16 @@ const EventsPage = () => {
   const [allEvents, setEvents] = useState(null);
   const [participate, setParticipate] = useState(null);
   const [hasEventsRefreshed, setHasEventsRefreshed] = useState(false);
-  const [location,setLocation]=useState("");
-  const [description,setDescription]=useState("");
-  const [modalEvent,setModalEvent]=useState({});
-  let eventObj={description:description};
-  const changeLocation=(e)=>{
+  const [location, setLocation] = useState("");
+  const [description, setDescription] = useState("");
+  const [modalEvent, setModalEvent] = useState({});
+  let eventObj = { description: description };
+  const changeLocation = (e) => {
     setLocation(e.target.value);
-  }
-  const changeDescription=(e)=>{
+  };
+  const changeDescription = (e) => {
     setDescription(e.target.value);
-  }
+  };
   const userEmail = localStorage.getItem("user");
   console.log(userEmail);
   const handleClick = async (id, isInterested) => {
@@ -176,11 +185,10 @@ const EventsPage = () => {
       console.log(err);
     }
   };
-  const openModal=(eve)=>{
+  const openModal = (eve) => {
     setModalEvent(eve);
     onOpen();
-
-  }
+  };
   const seeTrue = (event) => {
     console.log(event.OwnerEmail != userEmail);
     return event.OwnerEmail != userEmail;
@@ -199,16 +207,17 @@ const EventsPage = () => {
       let events = response;
       events = await Promise.all(
         events.map(async (event) => {
-          const imageUrl = "assets/home/"+event.eventType.replace(/\s/g, '')+".png"
+          const imageUrl =
+            "assets/home/" + event.eventType.replace(/\s/g, "") + ".png";
           const r = await participateData(event);
           if (r.data.length == 0) {
             return {
               ...event,
-              total: 0,
+              total: r.total,
               startDate: new Date(event.startDate),
               endDate: new Date(event.endDate),
               interested: false,
-              picture: imageUrl
+              picture: imageUrl,
             };
           } else {
             return {
@@ -217,7 +226,7 @@ const EventsPage = () => {
               startDate: new Date(event.startDate),
               endDate: new Date(event.endDate),
               interested: r.data[0]["participating"],
-              picture: imageUrl
+              picture: imageUrl,
             };
           }
         })
@@ -345,33 +354,52 @@ const EventsPage = () => {
                         variant="outline"
                       />
                       <MenuList>
-                        <MenuItem icon={<EditIcon />} onClick={()=>{openModal(event)}}  command="⌘T">
+                        <MenuItem
+                          icon={<EditIcon />}
+                          onClick={() => {
+                            openModal(event);
+                          }}
+                          command="⌘T"
+                        >
                           Edit Event
                         </MenuItem>
-                        <Modal
-                          isOpen={isOpen}
-                          onClose={onClose}
-                        >
+                        <Modal isOpen={isOpen} onClose={onClose}>
                           <ModalOverlay />
                           <ModalContent>
-                            <ModalHeader>Create your account</ModalHeader>
+                            <ModalHeader>Event Description</ModalHeader>
                             <ModalCloseButton />
                             <ModalBody pb={6}>
                               <FormControl mt={4}>
                                 <FormLabel>Description</FormLabel>
-                                <Input placeholder='Description' value={description} onChange={changeDescription}/>
+                                <Input
+                                  placeholder="Description"
+                                  value={description}
+                                  onChange={changeDescription}
+                                />
                               </FormControl>
                             </ModalBody>
 
                             <ModalFooter>
-                              <Button colorScheme='blue' mr={3} onClick={()=>{updateEvent(modalEvent,eventObj)}}>
+                              <Button
+                                colorScheme="blue"
+                                mr={3}
+                                onClick={() => {
+                                  updateEvent(modalEvent, eventObj);
+                                }}
+                              >
                                 Update
                               </Button>
                               <Button onClick={onClose}>Cancel</Button>
                             </ModalFooter>
                           </ModalContent>
                         </Modal>
-                        <MenuItem icon={<CloseIcon />} onClick={()=>{deleteEvent(event)}} command="⌘N">
+                        <MenuItem
+                          icon={<CloseIcon />}
+                          onClick={() => {
+                            deleteEvent(event);
+                          }}
+                          command="⌘N"
+                        >
                           Delete Event
                         </MenuItem>
                       </MenuList>
@@ -381,7 +409,7 @@ const EventsPage = () => {
                   <Image
                     objectFit="cover"
                     maxW={{ base: "100%" }}
-                    sx={{ maxHeight: 200}}
+                    sx={{ maxHeight: 200 }}
                     src={event.picture}
                     alt="Caffe Latte"
                     roundedTop="md"
