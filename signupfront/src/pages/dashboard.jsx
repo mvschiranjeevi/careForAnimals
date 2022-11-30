@@ -10,6 +10,7 @@ import http from "../services/httpService";
 import ResponsiveAppBar from "../components/navBar";
 import { Spinner, Stack } from "@chakra-ui/react";
 import Provider from "../chakra-theme/Provider";
+import { LinkItem } from "./login";
 
 class DashboardPage extends Component {
   token = localStorage.getItem("token");
@@ -81,7 +82,7 @@ class DashboardPage extends Component {
               alignItems="center"
             >
               <Spinner size="xl" />
-              <Link href="/login">You may not be logged in</Link>
+              <LinkItem to="/login">You may not be logged in</LinkItem>
             </Stack>
           </Provider>
         )}
