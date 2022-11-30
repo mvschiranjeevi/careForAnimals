@@ -56,8 +56,7 @@ import {
   HamburgerIcon,
   RepeatIcon,
 } from "@chakra-ui/icons";
-import { GoLocation } from "react-icons/go";
-import { BiUserPlus } from "react-icons/bi";
+import { BiCalendarEvent, BiMap, BiUserPlus } from "react-icons/bi";
 
 const categoryData = () => {
   return axios
@@ -170,8 +169,8 @@ const EventsPage = () => {
       let events = response;
       events = await Promise.all(
         events.map(async (event) => {
+          const imageUrl = "assets/home/"+event.eventType.replace(/\s/g, '')+".png"
           const r = await participateData(event);
-          console.log(r.data[0]["participating"]);
           if (r.data.length == 0) {
             return {
               ...event,
@@ -179,6 +178,7 @@ const EventsPage = () => {
               startDate: new Date(event.startDate),
               endDate: new Date(event.endDate),
               interested: false,
+              picture: imageUrl
             };
           } else {
             return {
@@ -187,6 +187,7 @@ const EventsPage = () => {
               startDate: new Date(event.startDate),
               endDate: new Date(event.endDate),
               interested: r.data[0]["participating"],
+              picture: imageUrl
             };
           }
         })
@@ -327,6 +328,7 @@ const EventsPage = () => {
                   <Image
                     objectFit="cover"
                     maxW={{ base: "100%" }}
+                    sx={{ maxHeight: 200}}
                     src={event.picture}
                     alt="Caffe Latte"
                     roundedTop="md"
@@ -341,10 +343,7 @@ const EventsPage = () => {
                           {convertDate(event.startDate)} -{" "}
                           {convertDate(event.endDate)}
                         </Text>
-
-                        <div
-                          style={{ position: "absolute", top: 315, left: 260 }}
-                        >
+                        <div>
                           <Text fontSize="xs">
                             No of pratipants : {event.total}
                           </Text>
@@ -400,7 +399,7 @@ const EventsPage = () => {
                   <CardFooter justify="space-between">
                     <VStack align="stretch">
                       <HStack>
-                        <GoLocation></GoLocation>
+                        <BiMap></BiMap>
                         <Text fontSize="xs">
                           <b>Location :</b> California
                         </Text>
@@ -409,7 +408,14 @@ const EventsPage = () => {
                       <HStack>
                         <BiUserPlus></BiUserPlus>
                         <Text fontSize="xs">
-                          <b>Owner</b> {event.ownerEmail}
+                          <b>Owner : </b> {event.OwnerEmail}
+                        </Text>
+                      </HStack>
+
+                      <HStack>
+                        <BiCalendarEvent></BiCalendarEvent>
+                        <Text fontSize="xs">
+                          <b>Event : </b> {event.eventType}
                         </Text>
                       </HStack>
                     </VStack>
