@@ -13,6 +13,8 @@ import NewPost from "./pages/createPost";
 import PostPage from "./pages/postpage";
 import ResponsiveAppBar from "./components/navBar";
 import Profile from "./pages/profile";
+import MyEventsPage from "./pages/myevents";
+
 import {
   ChakraProvider,
   Box,
@@ -101,6 +103,7 @@ class App extends Component {
           <Route path="/profile" element={<Profile />} />
           <Route path="/animalInfo" element={<AnimalInfo />} />
           <Route path="/animalData" element={<AnimalTable />} />
+          <Route path="/myEvents" element={<MyEventsPage />} />
           <Route path="/" element={<HomePage />} />
         </Routes>
       </>

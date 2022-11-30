@@ -52,11 +52,9 @@ function ResponsiveAppBar() {
     window.location.assign("/profile");
   };
 
-  const pages = [
-    { name: "Events", link: "/events" }
-  ];
+  const pages = [{ name: "Events", link: "/events" }];
   const logpages = [
-    { name: "My Events", link: "/events" },
+    { name: "My Events", link: "/myEvents" },
     { name: "Discussion Forum", link: "/dashboard" },
   ];
   const logoutPages = [
