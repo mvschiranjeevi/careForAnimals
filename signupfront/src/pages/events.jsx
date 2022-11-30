@@ -190,8 +190,10 @@ const EventsPage = () => {
     onOpen();
   };
   const seeTrue = (event) => {
-    console.log(event.OwnerEmail != userEmail);
-    return event.OwnerEmail != userEmail;
+    console.log(JSON.stringify(event.OwnerEmail));
+    console.log(userEmail);
+    console.log(JSON.stringify(event.OwnerEmail) == userEmail);
+    return event.OwnerEmail == userEmail;
   };
   const readMore = (eventDes) => {
     if (eventDes.length > 80) {
@@ -345,66 +347,68 @@ const EventsPage = () => {
                   borderColor={"black"}
                   key={event.eventTitle}
                 >
-                  <div style={{ position: "absolute", top: 4, left: 390 }}>
-                    <Menu>
-                      <MenuButton
-                        as={IconButton}
-                        aria-label="Options"
-                        icon={<DragHandleIcon />}
-                        variant="outline"
-                      />
-                      <MenuList>
-                        <MenuItem
-                          icon={<EditIcon />}
-                          onClick={() => {
-                            openModal(event);
-                          }}
-                          command="⌘T"
-                        >
-                          Edit Event
-                        </MenuItem>
-                        <Modal isOpen={isOpen} onClose={onClose}>
-                          <ModalOverlay />
-                          <ModalContent>
-                            <ModalHeader>Event Description</ModalHeader>
-                            <ModalCloseButton />
-                            <ModalBody pb={6}>
-                              <FormControl mt={4}>
-                                <FormLabel>Description</FormLabel>
-                                <Input
-                                  placeholder="Description"
-                                  value={description}
-                                  onChange={changeDescription}
-                                />
-                              </FormControl>
-                            </ModalBody>
+                  {JSON.stringify(event.OwnerEmail) == userEmail && (
+                    <div style={{ position: "absolute", top: 4, left: 390 }}>
+                      <Menu>
+                        <MenuButton
+                          as={IconButton}
+                          aria-label="Options"
+                          icon={<DragHandleIcon />}
+                          variant="outline"
+                        />
+                        <MenuList>
+                          <MenuItem
+                            icon={<EditIcon />}
+                            onClick={() => {
+                              openModal(event);
+                            }}
+                            command="⌘T"
+                          >
+                            Edit Event
+                          </MenuItem>
+                          <Modal isOpen={isOpen} onClose={onClose}>
+                            <ModalOverlay />
+                            <ModalContent>
+                              <ModalHeader>Event Description</ModalHeader>
+                              <ModalCloseButton />
+                              <ModalBody pb={6}>
+                                <FormControl mt={4}>
+                                  <FormLabel>Description</FormLabel>
+                                  <Input
+                                    placeholder="Description"
+                                    value={description}
+                                    onChange={changeDescription}
+                                  />
+                                </FormControl>
+                              </ModalBody>
 
-                            <ModalFooter>
-                              <Button
-                                colorScheme="blue"
-                                mr={3}
-                                onClick={() => {
-                                  updateEvent(modalEvent, eventObj);
-                                }}
-                              >
-                                Update
-                              </Button>
-                              <Button onClick={onClose}>Cancel</Button>
-                            </ModalFooter>
-                          </ModalContent>
-                        </Modal>
-                        <MenuItem
-                          icon={<CloseIcon />}
-                          onClick={() => {
-                            deleteEvent(event);
-                          }}
-                          command="⌘N"
-                        >
-                          Delete Event
-                        </MenuItem>
-                      </MenuList>
-                    </Menu>
-                  </div>
+                              <ModalFooter>
+                                <Button
+                                  colorScheme="blue"
+                                  mr={3}
+                                  onClick={() => {
+                                    updateEvent(modalEvent, eventObj);
+                                  }}
+                                >
+                                  Update
+                                </Button>
+                                <Button onClick={onClose}>Cancel</Button>
+                              </ModalFooter>
+                            </ModalContent>
+                          </Modal>
+                          <MenuItem
+                            icon={<CloseIcon />}
+                            onClick={() => {
+                              deleteEvent(event);
+                            }}
+                            command="⌘N"
+                          >
+                            Delete Event
+                          </MenuItem>
+                        </MenuList>
+                      </Menu>
+                    </div>
+                  )}
 
                   <Image
                     objectFit="cover"
