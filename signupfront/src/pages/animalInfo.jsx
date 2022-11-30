@@ -27,6 +27,9 @@ import {RiNumbersLine} from 'react-icons/ri'
 
 import CardActions from '@mui/material/CardActions';
 import { red } from "@mui/material/colors";
+import { MapsComponent, LayersDirective, LayerDirective, Zoom, MarkersDirective, Legend,
+    NavigationLine, NavigationLinesDirective, MarkerDirective,
+    MapsTooltip, Marker, Inject } from '@syncfusion/ej2-react-maps';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -162,11 +165,52 @@ const AnimalsInfo = props => {
 		<Grid container spacing={2}>
 			<Grid item xs={5}>
 				<Box>
-					<Card variant="outlined" sx={{width: 300, height:'max-content'}} >
+					<Card variant="outlined" sx={{height:'max-content'}} >
 					<CardContent>
 					<Typography variant="h5" component="div">
-					World Map
-					</Typography>
+					    <div>World Map</div>
+                    </Typography>
+                    </CardContent>
+					<CardContent sx={{position: 'sticky', overflowY: 'scroll', overflowX: 'scroll'}}>
+                    <MapsComponent id="maps"  zoomSettings={{ zoomFactor: 0}}
+					        legendSettings={{
+                                visible: true,
+                                type: 'Markers',
+                                useMarkerShape: true,
+                                toggleLegendSettings: {
+                                    enable: true,
+                                    applyShapeSettings: false,
+                                    border: {
+                                        color: 'green',
+                                        width: 2,
+                                    },
+                                },
+                            }}>
+					    <Inject services={[Marker, Legend, MapsTooltip]}/>
+                        <LayersDirective>
+                            <LayerDirective urlTemplate='https://tile.openstreetmap.org/level/tileX/tileY.png'>
+                                <MarkersDirective>
+                                    <MarkerDirective visible={true} height={20} width={20} animationDuration={0}
+                                    tooltipSettings={{
+                                        visible: true,
+                                        valuePath: 'name'
+                                    }}
+                                    dataSource={[
+                                        {
+                                            latitude: 34.060620,
+                                            longitude: -118.330491,
+                                            name: "California"
+                                        },
+                                        {
+                                            latitude: 40.724546,
+                                            longitude: -73.850344,
+                                            name: "New York"
+                                        }
+                                    ]}  shapeValuePath="shape"  legendText="name"/>
+                                </MarkersDirective>
+                            </LayerDirective>
+                        </LayersDirective>
+                    </MapsComponent>
 					<br/>
 					</CardContent>
 					</Card>
