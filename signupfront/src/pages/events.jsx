@@ -29,6 +29,7 @@ import {
   ModalFooter,
   useDisclosure,
   VStack,
+  
 } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -98,6 +99,14 @@ const deleteEvent=(event)=>{
   })
 }
 
+const updateEvent=(event,obj)=>{
+  console.log("OBJ:",obj);
+  return axios.put(`http://localhost:4000/app/updateEvent?eventTitle=${event.eventTitle}`,obj)
+  .then((resp)=>{
+    console.log(resp.data);
+  })
+}
+
 const participateFunc = async (event) => {
   const data = await participateData(event);
   console.log(data);
@@ -145,6 +154,16 @@ const EventsPage = () => {
   const [allEvents, setEvents] = useState(null);
   const [participate, setParticipate] = useState(null);
   const [hasEventsRefreshed, setHasEventsRefreshed] = useState(false);
+  const [location,setLocation]=useState("");
+  const [description,setDescription]=useState("");
+  const [modalEvent,setModalEvent]=useState({});
+  let eventObj={description:description};
+  const changeLocation=(e)=>{
+    setLocation(e.target.value);
+  }
+  const changeDescription=(e)=>{
+    setDescription(e.target.value);
+  }
   const userEmail = localStorage.getItem("user");
   console.log(userEmail);
   const handleClick = async (id, isInterested) => {
@@ -157,7 +176,11 @@ const EventsPage = () => {
       console.log(err);
     }
   };
+  const openModal=(eve)=>{
+    setModalEvent(eve);
+    onOpen();
 
+  }
   const seeTrue = (event) => {
     console.log(event.OwnerEmail != userEmail);
     return event.OwnerEmail != userEmail;
@@ -322,9 +345,32 @@ const EventsPage = () => {
                         variant="outline"
                       />
                       <MenuList>
-                        <MenuItem icon={<EditIcon />}  command="⌘T">
+                        <MenuItem icon={<EditIcon />} onClick={()=>{openModal(event)}}  command="⌘T">
                           Edit Event
                         </MenuItem>
+                        <Modal
+                          isOpen={isOpen}
+                          onClose={onClose}
+                        >
+                          <ModalOverlay />
+                          <ModalContent>
+                            <ModalHeader>Create your account</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody pb={6}>
+                              <FormControl mt={4}>
+                                <FormLabel>Description</FormLabel>
+                                <Input placeholder='Description' value={description} onChange={changeDescription}/>
+                              </FormControl>
+                            </ModalBody>
+
+                            <ModalFooter>
+                              <Button colorScheme='blue' mr={3} onClick={()=>{updateEvent(modalEvent,eventObj)}}>
+                                Update
+                              </Button>
+                              <Button onClick={onClose}>Cancel</Button>
+                            </ModalFooter>
+                          </ModalContent>
+                        </Modal>
                         <MenuItem icon={<CloseIcon />} onClick={()=>{deleteEvent(event)}} command="⌘N">
                           Delete Event
                         </MenuItem>

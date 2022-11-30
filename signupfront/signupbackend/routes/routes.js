@@ -68,6 +68,50 @@ router.delete("/deleteEvent",auth,async(req,res)=>{
       console.log(err);
     }
 });
+// router.put("/updateEvent",auth,async(req,res)=>{
+//   const data=req.body;
+//   try{
+//     events.findByIdAndUpdate()
+
+//   }catch(err){
+//     console.log("ERR",err);
+//   }
+// })
+
+router.route('/updateEvent').put((req, res, next) => {
+  console.log("RESPGAUTAM:",req.body);
+  events.updateOne({eventTitle:req.query.eventTitle}, {
+    $set: {description:req.body.description}
+  }, (error, data) => {
+    if (error) {
+      return next(error);
+      console.log(error)
+    } else {
+      res.json(data)
+      console.log('Student updated successfully !')
+    }
+  })
+})
+
+// router.put('/updateEvent',async(req,res)=>{
+//   const data=req.body;
+//   console.log("DATA:",data);
+//   try{
+//     events.findByIdAndUpdate(req.query.eventTitle,{$set:{
+//       location:data.location,
+//       description:data.description
+//     }},(err,data)=>{
+//       if(err){
+//         console.log('ERR',err);
+//       }else{
+//         res.json(data);
+//       }
+//     })
+//   }catch(err){
+//     console.log("ERR",err);
+//   }
+// })
+
 const verifyJWT = (request, response, next) => {
   const token = request.header("x-access-token");
   if (!token) {
