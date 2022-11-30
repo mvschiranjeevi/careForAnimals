@@ -16,6 +16,7 @@ import {
   Textarea,
   FormControl,
   HStack,
+  Text,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
@@ -25,18 +26,22 @@ import { object, string } from "zod";
 import axios from "axios";
 
 const eventsSchema = object({
-  eventTitle: string().min(5, "Title is required").max(20),
-  eventType: string().min(5, "User Name is required").max(30),
-  description: string().min(5, "Description is required").max(1024),
+  eventTitle: string().min(5, {
+    message: "Title length should be greater than 5",
+  }),
+  eventType: string().min(5, "Event Type is required").max(30),
+  description: string()
+    .min(5, "Description length should be greater than 5")
+    .max(1024),
   startDate: string().min(5, "Start Date is required").max(30),
   endDate: string().min(5, "End Date is required").max(30),
-  location: string().min(5, "location is required").max(30),
+  location: string().min(5, "Location length should be greater than 5").max(30),
   relatedTo: string().min(0, "location is required").max(30),
-}).refine((data) => {});
+});
 
 const CreateEventDialog = ({ categoryData }) => {
   const [hasEventsRefreshed, setHasEventsRefreshed] = useState(false);
-
+  const [greater, setGreater] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = React.useRef();
   const handleChange = (event) => {
@@ -59,15 +64,19 @@ const CreateEventDialog = ({ categoryData }) => {
     defaultValues,
   });
 
-  const handleSubmit = async () => {
-    const response = await axios.post(
-      "http://localhost:4000/app/createEvent",
-      methods.getValues()
-    );
-
-    window.location.reload();
-    if (response.status == 200) {
-      // console.log("Hallelujah!");
+  const processMessage = (data) => {
+    if (
+      new Date(data.startDate) > new Date(data.endDate) ||
+      new Date(data.endDate) < new Date(data.startDate)
+    ) {
+      setGreater(true);
+    } else {
+      setGreater(false);
+      const response = axios
+        .post("http://localhost:4000/app/createEvent", methods.getValues())
+        .then(() => {
+          window.location.reload();
+        });
     }
   };
 
@@ -95,107 +104,149 @@ const CreateEventDialog = ({ categoryData }) => {
         >
           <DrawerOverlay />
           <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader borderBottomWidth="1px">
-              Create a new event
-            </DrawerHeader>
+            <form
+              onSubmit={methods.handleSubmit((data) => processMessage(data))}
+            >
+              <DrawerCloseButton />
+              <DrawerHeader borderBottomWidth="1px">
+                Create a new event
+              </DrawerHeader>
 
-            <DrawerBody>
-              <Stack spacing="24px">
-                <Box>
-                  <FormControl isRequired>
-                    <FormLabel htmlFor="eventname">Name of the Event</FormLabel>
-                    <Input
-                      ref={firstField}
-                      required
-                      id="eventname"
-                      placeholder="Please enter event name"
-                      name="eventTitle"
-                      {...methods.register("eventTitle")}
-                    />
-                  </FormControl>
-                </Box>
+              <DrawerBody>
+                <Stack spacing="24px">
+                  <Box>
+                    <FormControl isRequired>
+                      <FormLabel htmlFor="eventTitle">
+                        Name of the Event
+                      </FormLabel>
+                      <Input
+                        {...methods.register("eventTitle")}
+                        required
+                        placeholder="Please enter event name"
+                        name="eventTitle"
+                      />
+                      {methods.formState.errors?.eventTitle?.message && (
+                        <Text color="red">
+                          {methods.formState.errors?.eventTitle?.message}
+                        </Text>
+                      )}
+                    </FormControl>
+                  </Box>
 
-                <Box>
-                  <FormControl isRequired>
-                    <FormLabel htmlFor="eventname">Event Category</FormLabel>
-                    <Select
-                      onChange={handleChange}
-                      name="categories"
-                      id="category-select"
-                      {...methods.register("eventType")}
-                      required
-                    >
-                      {categoryData.map((category) => (
-                        <option key={category._id}>{category.eventType}</option>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Box>
+                  <Box>
+                    <FormControl isRequired>
+                      <FormLabel htmlFor="eventname">Event Category</FormLabel>
+                      <Select
+                        onChange={handleChange}
+                        name="categories"
+                        id="category-select"
+                        {...methods.register("eventType", {
+                          minLength: 5,
+                          maxLength: 20,
+                        })}
+                        required
+                      >
+                        {categoryData.map((category) => (
+                          <option key={category._id}>
+                            {category.eventType}
+                          </option>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
 
-                <Box>
-                  <FormControl isRequired>
-                    <FormLabel htmlFor="desc">Description</FormLabel>
-                    <Textarea
-                      id="desc"
-                      placeholder="Enter your event description here..."
-                      name="description"
-                      required
-                      {...methods.register("description")}
-                    />
-                  </FormControl>
-                </Box>
+                  <Box>
+                    <FormControl isRequired>
+                      <FormLabel htmlFor="desc">Description</FormLabel>
+                      <Textarea
+                        id="desc"
+                        placeholder="Enter your event description here..."
+                        name="description"
+                        required
+                        {...methods.register("description", {
+                          minLength: 5,
+                          maxLength: 20,
+                        })}
+                      />
+                      {methods.formState.errors?.description?.message && (
+                        <Text color="red">
+                          {methods.formState.errors?.description?.message}
+                        </Text>
+                      )}
+                    </FormControl>
+                  </Box>
 
-                <HStack>
-                  <FormControl w="10rem" isRequired>
-                    <FormLabel>Start Date</FormLabel>
-                    <Input
-                      type="date"
-                      variant="outline"
-                      border="1px solid"
-                      borderColor="gray.600"
-                      name="startDate"
-                      {...methods.register("startDate")}
-                    />
-                  </FormControl>
+                  <HStack>
+                    <FormControl w="10rem" isRequired>
+                      <FormLabel>Start Date</FormLabel>
+                      <Input
+                        type="date"
+                        variant="outline"
+                        border="1px solid"
+                        borderColor="gray.600"
+                        name="startDate"
+                        {...methods.register("startDate", {
+                          minLength: 5,
+                          maxLength: 20,
+                        })}
+                      />
+                    </FormControl>
 
-                  <FormControl w="10rem" isRequired>
-                    <FormLabel>End date</FormLabel>
-                    <Input
-                      type="date"
-                      border="1px solid"
-                      borderColor="gray.600"
-                      name="endDate"
-                      {...methods.register("endDate")}
-                    />
-                  </FormControl>
-                </HStack>
+                    <FormControl w="10rem" isRequired>
+                      <FormLabel>End date</FormLabel>
+                      <Input
+                        type="date"
+                        border="1px solid"
+                        borderColor="gray.600"
+                        name="endDate"
+                        {...methods.register("endDate", {
+                          minLength: 5,
+                          maxLength: 20,
+                        })}
+                      />
+                    </FormControl>
 
-                <HStack>
-                  <FormControl w="15rem" isRequired>
-                    <FormLabel>Location</FormLabel>
-                    <Input
-                      // ref={firstField}
-                      required
-                      id="location"
-                      placeholder="Please enter the location"
-                      name="location"
-                      {...methods.register("location")}
-                    />
-                  </FormControl>
-                  <FormControl w="20rem">
-                    <FormLabel>Related To</FormLabel>
-                    <Input
-                      // ref={firstField}
-                      id="relatedTo"
-                      placeholder="Please enter the related animal"
-                      name="relatedTo"
-                      {...methods.register("relatedTo")}
-                    />
-                  </FormControl>
-                </HStack>
+                    {greater && (
+                      <Text color="red">
+                        Start Date should be less than end Date
+                      </Text>
+                    )}
+                  </HStack>
 
-                {/* <Box>
+                  <HStack>
+                    <FormControl w="15rem" isRequired>
+                      <FormLabel>Location</FormLabel>
+                      <Input
+                        required
+                        id="location"
+                        placeholder="Please enter the location"
+                        name="location"
+                        {...methods.register("location", {
+                          minLength: 5,
+                          maxLength: 20,
+                        })}
+                      />
+                      {methods.formState.errors?.location?.message && (
+                        <Text color="red">
+                          {methods.formState.errors?.location?.message}
+                        </Text>
+                      )}
+                    </FormControl>
+                    <FormControl w="20rem">
+                      <FormLabel>Related To</FormLabel>
+                      <Input
+                        id="relatedTo"
+                        placeholder="Please enter the related animal"
+                        name="relatedTo"
+                        {...methods.register("relatedTo", {
+                          minLength: 5,
+                          maxLength: 20,
+                        })}
+                      />
+                    </FormControl>
+                  </HStack>
+
+                  {/* <Box>
                   <FormLabel htmlFor="img">
                     Upload an image of your event here
                   </FormLabel>
@@ -205,15 +256,16 @@ const CreateEventDialog = ({ categoryData }) => {
                     type="file"
                   />
                 </Box> */}
-              </Stack>
-            </DrawerBody>
+                </Stack>
+              </DrawerBody>
 
-            <DrawerFooter borderTopWidth="1px">
-              <Button variant="outline" mr={3} onClick={onClose}>
-                Cancel
-              </Button>
-              <Button onClick={handleSubmit}>Submit</Button>
-            </DrawerFooter>
+              <DrawerFooter borderTopWidth="1px">
+                <Button variant="outline" mr={3} onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button type="submit">Submit</Button>
+              </DrawerFooter>
+            </form>
           </DrawerContent>
         </Drawer>
       </FormProvider>
