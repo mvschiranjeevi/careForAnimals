@@ -407,43 +407,6 @@ const EventsPage = () => {
                       <Heading size="md">{event.eventTitle}</Heading>
                       <Text fontSize="xs">
                         {event.description.slice(0, 80) + "  "}
-                        {readMore(event.description) && (
-                          <>
-                            <Link
-                              onClick={onOpen}
-                              color="green"
-                              textTransform="lowercase"
-                            >
-                              Read More
-                            </Link>
-                            <Modal
-                              blockScrollOnMount={false}
-                              isOpen={isOpen}
-                              onClose={onClose}
-                            >
-                              <ModalOverlay />
-                              <ModalContent>
-                                <ModalHeader>Event Description</ModalHeader>
-                                <ModalCloseButton />
-                                <ModalBody>
-                                  <Text fontWeight="bold" mb="1rem">
-                                    {event.description}
-                                  </Text>
-                                </ModalBody>
-
-                                <ModalFooter>
-                                  <Button
-                                    colorScheme="blue"
-                                    mr={3}
-                                    onClick={onClose}
-                                  >
-                                    Close
-                                  </Button>
-                                </ModalFooter>
-                              </ModalContent>
-                            </Modal>
-                          </>
-                        )}
                       </Text>
                     </Stack>
                   </CardBody>
