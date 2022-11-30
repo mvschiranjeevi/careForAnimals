@@ -205,8 +205,8 @@ const EventsPage = () => {
     resolver: zodResolver(filterSchema),
     defaultValues,
   });
-
-  if (allEvents.length === 0) {
+  //   console.log(allEvents.length );
+  if (allEvents === null || allEvents.length === 0) {
     return (
       <Provider>
         <Stack boxSize="full" h="100vh" justify="center" alignItems="center">
