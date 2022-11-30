@@ -59,14 +59,15 @@ router.post("/createEvent", auth, async (request, response) => {
     response.status(500).json(err);
   }
 });
-router.delete("/deleteEvent",auth,async(req,res)=>{
-  const data=req.query.eventTitle;
-  try{
-    events.deleteOne({eventTitle:data},async(res)=>{
-      console.log(res);
-    })}catch(err){
-      console.log(err);
-    }
+router.delete("/deleteEvent", auth, async (req, res) => {
+  const data = req.query.eventTitle;
+  try {
+    events.deleteOne({ eventTitle: data }, async (res) => {
+      // console.log(res);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 const verifyJWT = (request, response, next) => {
   const token = request.header("x-access-token");
@@ -204,6 +205,37 @@ router.get("/seeEvents", async (request, response) => {
   }
 });
 
+router.get("/seeEvent", auth, async (request, response) => {
+  try {
+    var events_1 = [];
+    participate.find(
+      {
+        user_id: request.user._id,
+        participating: true,
+      },
+      async (err, value) => {
+        for (var x in value) {
+          var temp = value[x].event_id;
+          events_1.push(temp);
+        }
+        console.log(events_1);
+        events.find(
+          {
+            event_id: { $sall: [events_1] },
+          },
+          async (err, values) => {
+            console.log(values);
+            response.send(values);
+          }
+        );
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    response.status(500).json(err);
+  }
+});
+
 router.get("/getCategories", async (request, response) => {
   try {
     eventType.find({}, async (err, value) => {
@@ -322,14 +354,14 @@ router.get("/participation", auth, async (req, res) => {
     const id = req.query.id;
     const eventsData = await events.findOne({ _id: id });
 
-    console.log(eventsData);
+    // console.log(eventsData);
     if (!eventsData) return res.status(400).send("Event doesn't exists");
     const event_id = eventsData._id;
     const participateDatas = await participate.find({
       event_id: event_id,
     });
 
-    console.log(participateDatas);
+    // console.log(participateDatas);
     const participateData = await participate.find({
       event_id: event_id,
       user_id: req.user._id,
