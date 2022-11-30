@@ -18,7 +18,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import React from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { object, string } from "zod";
@@ -35,6 +35,8 @@ const eventsSchema = object({
 }).refine((data) => {});
 
 const CreateEventDialog = ({ categoryData }) => {
+  const [hasEventsRefreshed, setHasEventsRefreshed] = useState(false);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = React.useRef();
   const handleChange = (event) => {
@@ -62,6 +64,8 @@ const CreateEventDialog = ({ categoryData }) => {
       "http://localhost:4000/app/createEvent",
       methods.getValues()
     );
+
+    window.location.reload();
     if (response.status == 200) {
       // console.log("Hallelujah!");
     }
