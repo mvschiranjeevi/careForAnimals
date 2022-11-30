@@ -38,4 +38,5 @@ app.use("/tags", tags);
 app.use("/reply", replies);
 app.use(express.json());
 app.use("/app", routesUrls);
-app.listen(4000, () => console.log("server is up and running"));
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log("server is up and running"));
