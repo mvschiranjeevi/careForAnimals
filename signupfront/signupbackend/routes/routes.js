@@ -79,20 +79,24 @@ router.delete("/deleteEvent", auth, async (req, res) => {
 //   }
 // })
 
-router.route('/updateEvent').put((req, res, next) => {
-  console.log("RESPGAUTAM:",req.body);
-  events.updateOne({eventTitle:req.query.eventTitle}, {
-    $set: {description:req.body.description}
-  }, (error, data) => {
-    if (error) {
-      return next(error);
-      console.log(error)
-    } else {
-      res.json(data)
-      console.log('Student updated successfully !')
+router.route("/updateEvent").put((req, res, next) => {
+  console.log("RESPGAUTAM:", req.body);
+  events.updateOne(
+    { eventTitle: req.query.eventTitle },
+    {
+      $set: { description: req.body.description },
+    },
+    (error, data) => {
+      if (error) {
+        return next(error);
+        console.log(error);
+      } else {
+        res.json(data);
+        console.log("Student updated successfully !");
+      }
     }
-  })
-})
+  );
+});
 
 // router.put('/updateEvent',async(req,res)=>{
 //   const data=req.body;
@@ -225,21 +229,6 @@ router.get("/seeProfile", async (request, response) => {
 
 router.get("/seeEvents", async (request, response) => {
   try {
-    // const filters = {
-    //   owner: req.body.owner,
-    //   eventType: req.body.eventType,
-    //   startDate: req.body.startDate,
-    //   endDate: req.body.endDate,
-    //   createdBy: req.body.createdBy,
-    // };
-    // const filter = {};
-
-    // for (let key in filters) {
-    //   if (filters[key] !== "") {
-    //     filter.key = filters[key];
-    //   }
-    // }
-
     events.find({}, async (err, value) => {
       response.send(value);
     });
@@ -253,25 +242,19 @@ router.get("/seeEvent", auth, async (request, response) => {
   try {
     var events_1 = [];
     participate.find(
-      {
-        user_id: request.user._id,
-        participating: true,
-      },
+      { user_id: request.user._id, participating: true },
       async (err, value) => {
-        for (var x in value) {
-          var temp = value[x].event_id;
-          events_1.push(temp);
-        }
-        console.log(events_1);
-        events.find(
-          {
-            event_id: { $sall: [events_1] },
-          },
-          async (err, values) => {
-            console.log(values);
-            response.send(values);
+        if (!participate) {
+          response.status(400).send("No Events as of now");
+        } else {
+          var events_id = [];
+          for (var x in value) {
+            events_id.push(value[x].event_id);
           }
-        );
+          events.find({ _id: events_id }, async (err, values) => {
+            response.send(values);
+          });
+        }
       }
     );
   } catch (err) {
