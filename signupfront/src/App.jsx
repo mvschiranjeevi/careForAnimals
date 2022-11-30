@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axois from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import axios from "axios";
@@ -30,6 +29,7 @@ import HomePage from "./pages/home";
 import AnimalInfo from "./pages/animalInfo";
 import AnimalsInfo from "./pages/animalsInfo";
 import AnimalTable from "./pages/animalTable";
+import backendPath from "./utils/backendPath";
 
 class App extends Component {
   constructor() {
@@ -75,7 +75,7 @@ class App extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-    axios.post("http://localhost:4000/app/signup", registered);
+    axios.post(backendPath+"/app/signup", registered);
     //   .then((response) => console.log(response.data));
 
     this.setState({

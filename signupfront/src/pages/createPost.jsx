@@ -12,11 +12,12 @@ import { Link } from "react-router-dom";
 // @ts-ignore
 // import config from "../utils/config.json";
 import { createpost } from "../services/postCreateService.js";
+import backendPath from "../utils/backendPath";
 
 class NewPost extends Form {
   token = localStorage.getItem("token");
 
-  tagsEndPoint = "http://localhost:4000/tags";
+  tagsEndPoint = backendPath+"/tags";
   state = {
     data: { title: "", description: "", tags: [] },
     errors: { title: "", description: "", tags: [] },

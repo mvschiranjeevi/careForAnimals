@@ -42,10 +42,11 @@ import { FormProvider, useForm } from "react-hook-form";
 import { object, string } from "zod";
 import { CloseIcon, DragHandleIcon, EditIcon } from "@chakra-ui/icons";
 import { BiCalendarEvent, BiMap, BiUserPlus } from "react-icons/bi";
+import backendPath from "../utils/backendPath";
 
 const categoryData = () => {
   return axios
-    .get(`http://localhost:4000/app/getCategories`)
+    .get(backendPath+`/app/getCategories`)
     .then((response) => {
       return response.data;
     });
@@ -53,7 +54,7 @@ const categoryData = () => {
 
 const eventData = () => {
   var user = localStorage.getItem("user_id");
-  return axios.get(`http://localhost:4000/app/seeEvent`).then((response) => {
+  return axios.get(backendPath+`/app/seeEvent`).then((response) => {
     return response.data;
   });
 };
@@ -61,7 +62,7 @@ const eventData = () => {
 const PostparticipateData = ({ id, isInterested }) => {
   return axios
     .post(
-      `http://localhost:4000/app/participate?id=${id}&status=${isInterested}`
+      backendPath+`/app/participate?id=${id}&status=${isInterested}`
     )
     .then((response) => {
       console.log(response);
@@ -70,9 +71,8 @@ const PostparticipateData = ({ id, isInterested }) => {
 };
 const participateData = (event) => {
   return axios
-    .get(`http://localhost:4000/app/participation?id=${event._id}`)
+    .get(backendPath+`/app/participation?id=${event._id}`)
     .then((response) => {
-      // console.log(response.data);
       return response.data;
     });
 };
@@ -80,7 +80,7 @@ const participateData = (event) => {
 const deleteEvent = (event) => {
   return axios
     .delete(
-      `http://localhost:4000/app/deleteEvent?eventTitle=${event.eventTitle}`
+      backendPath+`/app/deleteEvent?eventTitle=${event.eventTitle}`
     )
     .then((resp) => {
       console.log(resp.data);

@@ -57,17 +57,18 @@ import {
   RepeatIcon,
 } from "@chakra-ui/icons";
 import { BiCalendarEvent, BiMap, BiUserPlus } from "react-icons/bi";
+import backendPath from "../utils/backendPath";
 
 const categoryData = () => {
   return axios
-    .get(`http://localhost:4000/app/getCategories`)
+    .get(backendPath+`/app/getCategories`)
     .then((response) => {
       return response.data;
     });
 };
 
 const eventData = () => {
-  return axios.get(`http://localhost:4000/app/seeEvents`).then((response) => {
+  return axios.get(backendPath+`/app/seeEvents`).then((response) => {
     return response.data;
   });
 };
@@ -75,7 +76,7 @@ const eventData = () => {
 const PostparticipateData = ({ id, isInterested }) => {
   return axios
     .post(
-      `http://localhost:4000/app/participate?id=${id}&status=${isInterested}`
+      backendPath+`/app/participate?id=${id}&status=${isInterested}`
     )
     .then((response) => {
       console.log(response);
@@ -84,7 +85,7 @@ const PostparticipateData = ({ id, isInterested }) => {
 };
 const participateData = (event) => {
   return axios
-    .get(`http://localhost:4000/app/participation?id=${event._id}`)
+    .get(backendPath+`/app/participation?id=${event._id}`)
     .then((response) => {
       // console.log(response.data);
       return response.data;
@@ -94,11 +95,10 @@ const participateData = (event) => {
 const deleteEvent = (event) => {
   return axios
     .delete(
-      `http://localhost:4000/app/deleteEvent?eventTitle=${event.eventTitle}`
+      backendPath+`/app/deleteEvent?eventTitle=${event.eventTitle}`
     )
     .then((resp) => {
       window.location.reload();
-
       console.log(resp.data);
     });
 };
@@ -107,7 +107,7 @@ const updateEvent = (event, obj) => {
   console.log("OBJ:", obj);
   return axios
     .put(
-      `http://localhost:4000/app/updateEvent?eventTitle=${event.eventTitle}`,
+      backendPath+`/app/updateEvent?eventTitle=${event.eventTitle}`,
       obj
     )
     .then((resp) => {

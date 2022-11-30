@@ -19,8 +19,9 @@ import { ReactComponent as GitHubLogo } from "../assets/github.svg";
 import { LinkItem, OauthMuiLink } from "./login";
 import axios from "axios";
 import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import React from "react";
+import backendPath from "../utils/backendPath";
 
 // 👇 SignUp Schema with Zod
 const signupSchema = object({
@@ -58,7 +59,7 @@ const SignupPage = () => {
     console.log(JSON.stringify(values, null, 4));
 
     axios
-      .post("http://localhost:4000/app/signup", values)
+      .post(backendPath+"/app/signup", values)
       .then((response) => {
         console.log(response);
         if (response.status === 200) {

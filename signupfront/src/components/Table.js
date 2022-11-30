@@ -13,6 +13,7 @@ import { Typography, Link } from "@mui/material";
 import { fontSize } from "@mui/system";
 import Provider from "../chakra-theme/Provider";
 import Footer from "../components/Footer";
+import backendPath from "../utils/backendPath";
 
 const columns = [
   { id: "commonName", label: "Common Name", minWidth: 170 },
@@ -33,7 +34,7 @@ export default function AnimalsTable() {
   }));
 
   React.useEffect(() => {
-    Axios.get(`http://localhost:4000/app/getAnimals`).then((response) => {
+    Axios.get(backendPath+`/app/getAnimals`).then((response) => {
       setAnimals(response.data);
       console.log(response);
     });

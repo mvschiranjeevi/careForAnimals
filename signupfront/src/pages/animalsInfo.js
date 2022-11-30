@@ -20,7 +20,7 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
-
+import backendPath from "../utils/backendPath";
 import CardActions from '@mui/material/CardActions';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -53,7 +53,7 @@ const AnimalsInfo = props => {
 
   async function getAnimalInfo(name) {
   	try {
-  		const response = await axios.get('http://localhost:4000/app/animalInfo', {
+  		const response = await axios.get(backendPath+'/app/animalInfo', {
   			params: { animalName: name }}).then(
   				function (response) {
   					setAnimalData(response.data[0]);

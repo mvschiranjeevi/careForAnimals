@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { object, string } from "zod";
 import axios from "axios";
+import backendPath from "../utils/backendPath";
 
 const eventsSchema = object({
   eventTitle: string().min(5, {
@@ -64,6 +65,15 @@ const CreateEventDialog = ({ categoryData }) => {
     defaultValues,
   });
 
+  const handleSubmit = async () => {
+    const response = await axios.post(
+      "http://localhost:4000/app/createEvent",
+      methods.getValues()
+    );
+
+    window.location.reload();
+    if (response.status == 200) {
+      // console.log("Hallelujah!");
   const processMessage = (data) => {
     if (
       new Date(data.startDate) > new Date(data.endDate) ||

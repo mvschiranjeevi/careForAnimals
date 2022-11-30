@@ -23,6 +23,7 @@ import { ReactComponent as GitHubLogo } from "../assets/github.svg";
 import styled from "@emotion/styled";
 import axios from "axios";
 import React, { useState } from "react";
+import backendPath from "../utils/backendPath";
 
 // 👇 Styled React Route Dom Link Component
 export const LinkItem = styled(Link)`
@@ -81,7 +82,7 @@ const LoginPage = () => {
   const onSubmitHandler = async (values) => {
     console.log(values);
     axios
-      .post("http://localhost:4000/app/login", values)
+      .post(backendPath+"/app/login", values)
       .then((response) => {
         // console.log(response);
         if (response.status === 200) {
@@ -115,7 +116,7 @@ const LoginPage = () => {
 
   const userAuth = () => {
     axios
-      .get("http://localhost:4000/app/isUserAuth", {
+      .get(backendPath+"/app/isUserAuth", {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },

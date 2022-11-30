@@ -1,7 +1,7 @@
 import http from "./httpService";
 // @ts-ignore
 import config from "../utils/config.json";
-// var postEndPoint = "http://localhost:4000/posts";
+
 export function createpost(postbody, user) {
   const users = {
     _id: localStorage.getItem("user_id"),
