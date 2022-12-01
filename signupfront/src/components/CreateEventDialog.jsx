@@ -67,7 +67,7 @@ const CreateEventDialog = ({ categoryData }) => {
 
   const handleSubmit = async () => {
     const response = await axios.post(
-      "http://localhost:4000/app/createEvent",
+      backendPath+"/app/createEvent",
       methods.getValues()
     );
 
@@ -83,7 +83,7 @@ const CreateEventDialog = ({ categoryData }) => {
     } else {
       setGreater(false);
       const response = axios
-        .post("http://localhost:4000/app/createEvent", methods.getValues())
+        .post(backendPath+"/app/createEvent", methods.getValues())
         .then(() => {
           window.location.reload();
         });
