@@ -73,21 +73,19 @@ const CreateEventDialog = ({ categoryData }) => {
 
     window.location.reload();
     if (response.status == 200) {
-      // console.log("Hallelujah!");
-  const processMessage = (data) => {
-    if (
-      new Date(data.startDate) > new Date(data.endDate) ||
-      new Date(data.endDate) < new Date(data.startDate)
-    ) {
-      setGreater(true);
-    } else {
-      setGreater(false);
-      const response = axios
-        .post(backendPath+"/app/createEvent", methods.getValues())
-        .then(() => {
-          window.location.reload();
-        });
-    }
+    }}
+      const processMessage = (data) => {
+        if (
+          new Date(data.startDate) > new Date(data.endDate) ||
+          new Date(data.endDate) < new Date(data.startDate)
+        ) {
+            setGreater(true);
+        } else {
+            setGreater(false);
+            const response = axios.post(backendPath+"/app/createEvent", methods.getValues()).then(() => {
+              window.location.reload();
+            });
+        }
   };
 
   return (
@@ -255,17 +253,6 @@ const CreateEventDialog = ({ categoryData }) => {
                       />
                     </FormControl>
                   </HStack>
-
-                  {/* <Box>
-                  <FormLabel htmlFor="img">
-                    Upload an image of your event here
-                  </FormLabel>
-                  <Input
-                    placeholder="Select Date and Time"
-                    size="s"
-                    type="file"
-                  />
-                </Box> */}
                 </Stack>
               </DrawerBody>
 
@@ -284,5 +271,3 @@ const CreateEventDialog = ({ categoryData }) => {
 };
 
 export default CreateEventDialog;
-
-// event name, event location, event image, event dates, event description, event type
