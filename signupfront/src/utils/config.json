@@ -1,6 +1,6 @@
 {
-  "postEndPoint": "http://localhost:4000/posts/",
-  "tagsEndPoint": "http://localhost:4000/tags/",
-  "usersEndPoint": "http://localhost:4000/users/",
-  "repliesEndPoint": "http://localhost:4000/reply/"
+  "postEndPoint": "https://care-for-animals-backend.onrender.com/posts/",
+  "tagsEndPoint": "https://care-for-animals-backend.onrender.com/tags/",
+  "usersEndPoint": "https://care-for-animals-backend.onrender.com/users/",
+  "repliesEndPoint": "https://care-for-animals-backend.onrender.com/reply/"
 }

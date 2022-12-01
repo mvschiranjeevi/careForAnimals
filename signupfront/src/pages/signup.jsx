@@ -58,7 +58,7 @@ const SignupPage = () => {
     console.log(JSON.stringify(values, null, 4));
 
     axios
-      .post("http://localhost:4000/app/signup", values)
+      .post("https://care-for-animals-backend.onrender.com/app/signup", values)
       .then((response) => {
         console.log(response);
         if (response.status === 200) {

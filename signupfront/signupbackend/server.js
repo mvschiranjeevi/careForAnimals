@@ -14,15 +14,19 @@ const replies = require("./routes/replies");
 const participate = require("./routes/participation");
 
 const config = require("config");
+const port = process.env.PORT || 4000;
 
-dotenv.config();
+// dotenv.config();
 
 app.use(cors());
 
-mongoose.connect(process.env.DB_PATH, (err) => {
-  if (err) console.log(err);
-  else console.log("mongdb is connected");
-});
+mongoose.connect(
+  "mongodb+srv://newUser:user123@cluster0.tad6sdk.mongodb.net/care-for-animals-db?retryWrites=true&w=majority",
+  (err) => {
+    if (err) console.log(err);
+    else console.log("mongdb is connected");
+  }
+);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -38,4 +42,4 @@ app.use("/tags", tags);
 app.use("/reply", replies);
 app.use(express.json());
 app.use("/app", routesUrls);
-app.listen(4000, () => console.log("server is up and running"));
+app.listen(port, () => console.log("server is up and running" + port));

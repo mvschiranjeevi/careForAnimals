@@ -1,4 +1,4 @@
-POST http://localhost:4000/app/signup
+POST https://care-for-animals-backend.onrender.com/app/signup
 Content-Type:  application/json
 
 {

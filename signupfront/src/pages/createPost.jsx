@@ -16,7 +16,7 @@ import { createpost } from "../services/postCreateService.js";
 class NewPost extends Form {
   token = localStorage.getItem("token");
 
-  tagsEndPoint = "http://localhost:4000/tags";
+  tagsEndPoint = "https://care-for-animals-backend.onrender.com/tags";
   state = {
     data: { title: "", description: "", tags: [] },
     errors: { title: "", description: "", tags: [] },

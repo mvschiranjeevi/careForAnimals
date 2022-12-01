@@ -44,7 +44,7 @@ const AnimalsInfo = (props) => {
   async function getAnimalInfo(name) {
     try {
       const response = await axios
-        .get("http://localhost:4000/app/animalInfo", {
+        .get("https://care-for-animals-backend.onrender.com/app/animalInfo", {
           params: { animalName: name },
         })
         .then(function (response) {

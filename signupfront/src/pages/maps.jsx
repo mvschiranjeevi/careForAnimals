@@ -53,26 +53,26 @@ const AnimalsInfo = (props) => {
   async function getAnimalInfo(name) {
     try {
       const response = await axios
-        .get("http://localhost:4000/app/animalInfo", {
+        .get("https://care-for-animals-backend.onrender.com/app/animalInfo", {
           params: { animalName: name },
         })
         .then(function (response) {
-        	if(response.data.length !== 0){
-        		const animal = response.data[0];
-        		const places = JSON.parse(animal.places[0])
-        		animal['placeData'] = []
-        		if(animal.places.length !== 0){
-        			for(let index in places){
-        				animal['placeData'].push({
-        					"name" : places[index][0],
-        					"latitude" : places[index][1],
-        					"longitude" : places[index][2]
-        				})
-        			}
-        		}
-        		setAnimalData(animal);
-						setIsLoaded(true);
-        	}
+          if (response.data.length !== 0) {
+            const animal = response.data[0];
+            const places = JSON.parse(animal.places[0]);
+            animal["placeData"] = [];
+            if (animal.places.length !== 0) {
+              for (let index in places) {
+                animal["placeData"].push({
+                  name: places[index][0],
+                  latitude: places[index][1],
+                  longitude: places[index][2],
+                });
+              }
+            }
+            setAnimalData(animal);
+            setIsLoaded(true);
+          }
         });
     } catch (exception) {
       console.log(exception);
@@ -103,48 +103,48 @@ const AnimalsInfo = (props) => {
               overflowX: "scroll",
             }}
           >
-          { isLoaded ? (
-          	<MapsComponent
-              id="maps"
-              zoomSettings={{ zoomFactor: 2}}
-              legendSettings={{
-                visible: true,
-                type: "Markers",
-                useMarkerShape: true,
-                toggleLegendSettings: {
-                  enable: true,
-                  applyShapeSettings: false,
-                  border: {
-                    color: "green",
-                    width: 2,
+            {isLoaded ? (
+              <MapsComponent
+                id="maps"
+                zoomSettings={{ zoomFactor: 2 }}
+                legendSettings={{
+                  visible: true,
+                  type: "Markers",
+                  useMarkerShape: true,
+                  toggleLegendSettings: {
+                    enable: true,
+                    applyShapeSettings: false,
+                    border: {
+                      color: "green",
+                      width: 2,
+                    },
                   },
-                },
-              }}
-            >
-              <Inject services={[Marker, Legend, MapsTooltip]} />
-              <LayersDirective>
-                <LayerDirective urlTemplate="https://tile.openstreetmap.org/level/tileX/tileY.png">
-                  <MarkersDirective>
-                    <MarkerDirective
-                      visible={true}
-                      height={20}
-                      width={20}
-                      animationDuration={0}
-                      tooltipSettings={{
-                        visible: true,
-                        valuePath: "name",
-                      }}
-											dataSource={animalData?.placeData}
-                      shapeValuePath="shape"
-                      legendText="name"
-                    />
-                  </MarkersDirective>
-                </LayerDirective>
-              </LayersDirective>
-            </MapsComponent>
-          ) : (
-							<> </>
-					)}
+                }}
+              >
+                <Inject services={[Marker, Legend, MapsTooltip]} />
+                <LayersDirective>
+                  <LayerDirective urlTemplate="https://tile.openstreetmap.org/level/tileX/tileY.png">
+                    <MarkersDirective>
+                      <MarkerDirective
+                        visible={true}
+                        height={20}
+                        width={20}
+                        animationDuration={0}
+                        tooltipSettings={{
+                          visible: true,
+                          valuePath: "name",
+                        }}
+                        dataSource={animalData?.placeData}
+                        shapeValuePath="shape"
+                        legendText="name"
+                      />
+                    </MarkersDirective>
+                  </LayerDirective>
+                </LayersDirective>
+              </MapsComponent>
+            ) : (
+              <> </>
+            )}
             <br />
           </CardContent>
         </Card>

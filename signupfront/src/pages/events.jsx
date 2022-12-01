@@ -60,22 +60,24 @@ import { BiCalendarEvent, BiMap, BiUserPlus } from "react-icons/bi";
 
 const categoryData = () => {
   return axios
-    .get(`http://localhost:4000/app/getCategories`)
+    .get(`https://care-for-animals-backend.onrender.com/app/getCategories`)
     .then((response) => {
       return response.data;
     });
 };
 
 const eventData = () => {
-  return axios.get(`http://localhost:4000/app/seeEvents`).then((response) => {
-    return response.data;
-  });
+  return axios
+    .get(`https://care-for-animals-backend.onrender.com/app/seeEvents`)
+    .then((response) => {
+      return response.data;
+    });
 };
 
 const PostparticipateData = ({ id, isInterested }) => {
   return axios
     .post(
-      `http://localhost:4000/app/participate?id=${id}&status=${isInterested}`
+      `https://care-for-animals-backend.onrender.com/app/participate?id=${id}&status=${isInterested}`
     )
     .then((response) => {
       console.log(response);
@@ -84,7 +86,9 @@ const PostparticipateData = ({ id, isInterested }) => {
 };
 const participateData = (event) => {
   return axios
-    .get(`http://localhost:4000/app/participation?id=${event._id}`)
+    .get(
+      `https://care-for-animals-backend.onrender.com/app/participation?id=${event._id}`
+    )
     .then((response) => {
       // console.log(response.data);
       return response.data;
@@ -94,7 +98,7 @@ const participateData = (event) => {
 const deleteEvent = (event) => {
   return axios
     .delete(
-      `http://localhost:4000/app/deleteEvent?eventTitle=${event.eventTitle}`
+      `https://care-for-animals-backend.onrender.com/app/deleteEvent?eventTitle=${event.eventTitle}`
     )
     .then((resp) => {
       window.location.reload();
@@ -107,7 +111,7 @@ const updateEvent = (event, obj) => {
   console.log("OBJ:", obj);
   return axios
     .put(
-      `http://localhost:4000/app/updateEvent?eventTitle=${event.eventTitle}`,
+      `https://care-for-animals-backend.onrender.com/app/updateEvent?eventTitle=${event.eventTitle}`,
       obj
     )
     .then((resp) => {
@@ -252,7 +256,7 @@ const EventsPage = () => {
 
   // const handleSubmit = async () => {
   //   const response = await axios.post(
-  //     "http://localhost:4000/app/seeEvents?",
+  //     "https://care-for-animals-backend.onrender.com/app/seeEvents?",
   //     methods.getValues()
   //   );
   //   if (response.status == 200) {

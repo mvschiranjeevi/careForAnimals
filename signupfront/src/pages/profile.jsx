@@ -33,7 +33,9 @@ const data = () => {
   const email = localStorage.getItem("user").slice(1, -1);
   console.log(email);
   return axios
-    .get(`http://localhost:4000/app/seeProfile?email=${email}`)
+    .get(
+      `https://care-for-animals-backend.onrender.com/app/seeProfile?email=${email}`
+    )
     .then((response) => {
       console.log("hi");
       console.log(response);

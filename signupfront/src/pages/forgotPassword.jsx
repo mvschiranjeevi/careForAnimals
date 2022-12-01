@@ -56,7 +56,7 @@ const ForgotPasswordPage = () => {
   const onSubmitHandler = async (values) => {
     console.log(JSON.stringify(values, null, 4));
     axios
-      .post("http://localhost:4000/app/forgot", values)
+      .post("https://care-for-animals-backend.onrender.com/app/forgot", values)
       .then((response) => {
         console.log(response);
         if (response.status === 200) {

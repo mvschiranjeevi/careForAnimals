@@ -33,7 +33,9 @@ export default function AnimalsTable() {
   }));
 
   React.useEffect(() => {
-    Axios.get(`http://localhost:4000/app/getAnimals`).then((response) => {
+    Axios.get(
+      `https://care-for-animals-backend.onrender.com/app/getAnimals`
+    ).then((response) => {
       setAnimals(response.data);
       console.log(response);
     });

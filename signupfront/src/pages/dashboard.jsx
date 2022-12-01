@@ -14,8 +14,8 @@ import { LinkItem } from "./login";
 
 class DashboardPage extends Component {
   token = localStorage.getItem("token");
-  postEndPoint = "http://localhost:4000/posts/";
-  tagsEndPoint = "http://localhost:4000/tags/";
+  postEndPoint = "https://care-for-animals-backend.onrender.com/posts/";
+  tagsEndPoint = "https://care-for-animals-backend.onrender.com/tags/";
   state = {
     allposts: [],
     currentPage: 1,

@@ -6,33 +6,37 @@ import AnimalCard from "../components/AnimalCard";
 import ScrollIntoView from "react-scroll-into-view";
 import ResponsiveAppBar from "../components/navBar";
 import Footer from "../components/Footer";
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const HomePage = () => {
-	const [isLoaded, setIsLoaded] = useState(false);
-	const [animals, setAnimals] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [animals, setAnimals] = useState([]);
 
-	useEffect(() => {
-		getAnimalData()
+  useEffect(() => {
+    getAnimalData();
   }, []);
 
   async function getAnimalData() {
-  	try{
-  		const response = await axios.get('http://localhost:4000/app/getSetOfAnimals', {
-  			params: {}}).then(
-  				function (response) {
-  					setAnimals(response.data);
-  					setIsLoaded(true);
-  					console.log(response);
-  				}
-  			);
-  	} catch(exception) {
-  		console.log(exception)
-  	}
+    try {
+      const response = await axios
+        .get(
+          "https://care-for-animals-backend.onrender.com/app/getSetOfAnimals",
+          {
+            params: {},
+          }
+        )
+        .then(function (response) {
+          setAnimals(response.data);
+          setIsLoaded(true);
+          console.log(response);
+        });
+    } catch (exception) {
+      console.log(exception);
+    }
   }
-  let navigate = useNavigate()
+  let navigate = useNavigate();
 
   return (
     <div>
@@ -104,7 +108,9 @@ const HomePage = () => {
             <Heading fontSize="3xl" color="white">
               PROTECTING WILDLIFE FOR A HEALTHY PLANET
             </Heading>
-            <Button onClick = {() => navigate('/dashboard')}>Discussion Forum</Button>
+            <Button onClick={() => navigate("/dashboard")}>
+              Discussion Forum
+            </Button>
           </Stack>
           <Stack justify="center" alignItems="center" spacing="4" pt="4rem">
             <Text w="30rem">
@@ -114,24 +120,30 @@ const HomePage = () => {
               other species or offers the opportunity to protect whole
               landscapes or marine areas.
             </Text>
-            { isLoaded ? (
-            	<Stack justify="center" alignItems="center" spacing="1" pt="4rem">
-            	<SimpleGrid columns={3} pt="4rem">
-								{animals.map((animal) => (
-									<AnimalCard key={animal.commonName} {...animal} />
-								))}
-							</SimpleGrid>
-							<span></span>
-							<span style={{alignContent:'center'}} onClick = {() => navigate('/animalData')}>View More<KeyboardArrowDownOutlinedIcon/></span>
-							<span></span>
-							</Stack>
+            {isLoaded ? (
+              <Stack justify="center" alignItems="center" spacing="1" pt="4rem">
+                <SimpleGrid columns={3} pt="4rem">
+                  {animals.map((animal) => (
+                    <AnimalCard key={animal.commonName} {...animal} />
+                  ))}
+                </SimpleGrid>
+                <span></span>
+                <span
+                  style={{ alignContent: "center" }}
+                  onClick={() => navigate("/animalData")}
+                >
+                  View More
+                  <KeyboardArrowDownOutlinedIcon />
+                </span>
+                <span></span>
+              </Stack>
             ) : (
-							<> </>
-						)}
+              <> </>
+            )}
           </Stack>
         </Stack>
-        
-        <Footer/>
+
+        <Footer />
       </Provider>
     </div>
   );

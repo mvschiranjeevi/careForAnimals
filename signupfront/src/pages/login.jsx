@@ -81,7 +81,7 @@ const LoginPage = () => {
   const onSubmitHandler = async (values) => {
     console.log(values);
     axios
-      .post("http://localhost:4000/app/login", values)
+      .post("https://care-for-animals-backend.onrender.com/app/login", values)
       .then((response) => {
         // console.log(response);
         if (response.status === 200) {
@@ -115,7 +115,7 @@ const LoginPage = () => {
 
   const userAuth = () => {
     axios
-      .get("http://localhost:4000/app/isUserAuth", {
+      .get("https://care-for-animals-backend.onrender.com/app/isUserAuth", {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },
