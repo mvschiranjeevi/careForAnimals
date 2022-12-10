@@ -29,6 +29,7 @@ import {
   ModalFooter,
   useDisclosure,
   VStack,
+  Textarea,
 } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -102,6 +103,7 @@ const deleteEvent = (event) => {
     )
     .then((resp) => {
       window.location.reload();
+
       console.log(resp.data);
     });
 };
@@ -282,66 +284,6 @@ const EventsPage = () => {
       <Provider>
         <FormProvider {...methods}>
           <Stack h="full">
-            {/* <Box border="2px solid gray" rounded="lg" m="2rem">
-              <HStack>
-                <Example />
-                <FormControl w="15rem">
-                  <FormLabel>Event Type</FormLabel>
-                  <Select
-                    border="1px solid"
-                    borderColor="gray.600"
-                    //   onChange={handleChange}
-                    id="category-select"
-                    name="eventType"
-                    {...methods.register("eventType")}
-                  >
-                    {category.map((category) => (
-                      <option key={category._id}>{category.eventType}</option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl w="15rem">
-                  <FormLabel>Owner</FormLabel>
-                  <Select
-                    border="1px solid"
-                    borderColor="gray.600"
-                    name="owner"
-                    {...methods.register("owner")}
-                  >
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                  </Select>
-                </FormControl>
-
-                <FormControl w="10rem">
-                  <FormLabel>Start Date</FormLabel>
-                  <Input
-                    type="date"
-                    variant="outline"
-                    border="1px solid"
-                    borderColor="gray.600"
-                    name="startDate"
-                    {...methods.register("startDate")}
-                  />
-                </FormControl>
-
-                <FormControl w="10rem">
-                  <FormLabel>End date</FormLabel>
-                  <Input
-                    type="date"
-                    border="1px solid"
-                    borderColor="gray.600"
-                    name="endDate"
-                    {...methods.register("endDate")}
-                  />
-                </FormControl>
-                <Box pt="1.8rem" pl="1.5rem">
-                  <Button size="md">Submit</Button>
-                </Box>
-              </HStack>
-            </Box> */}
-
             <SimpleGrid columns={[1, 3]} spacing={10} p="2rem">
               {events.map((event) => (
                 <Card
@@ -376,9 +318,8 @@ const EventsPage = () => {
                               <ModalCloseButton />
                               <ModalBody pb={6}>
                                 <FormControl mt={4}>
-                                  <FormLabel>Description</FormLabel>
-                                  <Input
-                                    placeholder="Description"
+                                  <Textarea
+                                    placeholder="Please Enter Your Description Here"
                                     value={description}
                                     onChange={changeDescription}
                                   />
