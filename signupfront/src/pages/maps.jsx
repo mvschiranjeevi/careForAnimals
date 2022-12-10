@@ -173,7 +173,7 @@ const AnimalsInfo = (props) => {
 
             {checkEmpty(animalData?.threatInfo) ? (
               <Typography align="center">
-                Information not availablefor this animal
+                Information not available for this animal
               </Typography>
             ) : (
               <Typography>{animalData?.threatInfo} </Typography>
