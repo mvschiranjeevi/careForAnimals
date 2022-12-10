@@ -127,9 +127,13 @@ const AnimalsInfo = (props) => {
                       <ModalHeader>Why they matter</ModalHeader>
                       <ModalCloseButton />
                       <ModalBody>
-                        <Text fontWeight="bold" mb="1rem">
-                          {animalData?.matterText}
-                        </Text>
+                        {checkEmpty(animalData?.matterText) ? (
+                          <Text>Information not available for this animal</Text>
+                        ) : (
+                          <Text fontWeight="bold" mb="1rem">
+                            {animalData?.matterText}
+                          </Text>
+                        )}
                       </ModalBody>
 
                       <ModalFooter>

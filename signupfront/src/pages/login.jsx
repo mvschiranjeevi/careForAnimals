@@ -89,7 +89,6 @@ const LoginPage = () => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("user", JSON.stringify(response.data.email));
           localStorage.setItem("user_id", response.data.user_id);
-
           setLoginSuccess(true);
         }
       })
@@ -277,32 +276,12 @@ const LoginPage = () => {
                     </LoadingButton>
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography
-                    variant="h6"
-                    component="p"
-                    sx={{
-                      paddingLeft: { sm: "3rem" },
-                      mb: "1.5rem",
-                      textAlign: "center",
-                    }}
-                  >
-                    Log in with another provider:
-                  </Typography>
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    sx={{ paddingLeft: { sm: "3rem" }, rowGap: "1rem" }}
-                  >
-                    <OauthMuiLink href="">
-                      <GoogleLogo style={{ height: "2rem" }} />
-                      Google
-                    </OauthMuiLink>
-                    <OauthMuiLink href="">
-                      <GitHubLogo style={{ height: "2rem" }} />
-                      GitHub
-                    </OauthMuiLink>
-                  </Box>
+                <Grid item xs={12} sm={6} sx={{ padding: "3rem" }}>
+                  <img
+                    src="/assets/saveAnimals.jpg"
+                    height="300rem"
+                    width="420rem"
+                  />
                 </Grid>
               </Grid>
               <Grid container justifyContent="center">

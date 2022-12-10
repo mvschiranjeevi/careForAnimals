@@ -21,6 +21,8 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import React from "react";
+import { Justify } from "react-bootstrap-icons";
+import { textAlign } from "@mui/system";
 
 // 👇 SignUp Schema with Zod
 const signupSchema = object({
@@ -236,7 +238,19 @@ const SignupPage = () => {
                     </LoadingButton>
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} sx={{}}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  sx={{ padding: "4rem", marginTop: "5rem" }}
+                >
+                  <img
+                    src="/assets/saveAnimals.jpg"
+                    height="300rem"
+                    width="420rem"
+                  />
+                </Grid>
+                {/* <Grid item xs={12} sm={6} sx={{}}>
                   <Typography
                     variant="h6"
                     component="p"
@@ -262,7 +276,7 @@ const SignupPage = () => {
                       GitHub
                     </OauthMuiLink>
                   </Box>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Grid container justifyContent="center">
                 <Stack sx={{ mt: "3rem", textAlign: "center" }}>

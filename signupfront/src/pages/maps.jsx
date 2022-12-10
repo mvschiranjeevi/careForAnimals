@@ -21,7 +21,17 @@ import {
   Marker,
   Inject,
 } from "@syncfusion/ej2-react-maps";
-
+const checkEmpty = (value) => {
+  // const height = value?.length;
+  // console.log(height);
+  if (value == null || value.length == 0) {
+    console.log(true);
+    return true;
+  } else {
+    console.log(false);
+    return false;
+  }
+};
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -160,7 +170,14 @@ const AnimalsInfo = (props) => {
               Threat Info
             </Typography>
             <br />
-            <Typography>{animalData?.threatInfo}</Typography>
+
+            {checkEmpty(animalData?.threatInfo) ? (
+              <Typography align="center">
+                Information not availablefor this animal
+              </Typography>
+            ) : (
+              <Typography>{animalData?.threatInfo} </Typography>
+            )}
           </CardContent>
         </Card>
       </Box>

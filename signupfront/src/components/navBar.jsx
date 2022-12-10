@@ -39,11 +39,12 @@ function ResponsiveAppBar() {
     const token = localStorage.getItem("token");
     console.log("token", token, !!token);
     setIsLoggedIn(!!token);
-  }, []);
+  });
 
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("user_id");
     setIsLoggedIn(false);
     window.location.href = "/login";
   };
@@ -62,7 +63,11 @@ function ResponsiveAppBar() {
     { name: "Login", link: "/login" },
   ];
   const settings = [
-    { name: "Profile", link: "/profile", onClick: () => console.log("baap") },
+    {
+      name: "Profile",
+      link: "/profile",
+      onClick: () => console.log("profile"),
+    },
     { name: "Logout", link: "/login", onClick: logout },
   ];
 

@@ -102,7 +102,6 @@ const deleteEvent = (event) => {
     )
     .then((resp) => {
       window.location.reload();
-
       console.log(resp.data);
     });
 };
@@ -283,7 +282,7 @@ const EventsPage = () => {
       <Provider>
         <FormProvider {...methods}>
           <Stack h="full">
-            <Box border="2px solid gray" rounded="lg" m="2rem">
+            {/* <Box border="2px solid gray" rounded="lg" m="2rem">
               <HStack>
                 <Example />
                 <FormControl w="15rem">
@@ -341,7 +340,7 @@ const EventsPage = () => {
                   <Button size="md">Submit</Button>
                 </Box>
               </HStack>
-            </Box>
+            </Box> */}
 
             <SimpleGrid columns={[1, 3]} spacing={10} p="2rem">
               {events.map((event) => (
