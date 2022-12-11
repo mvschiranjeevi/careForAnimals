@@ -23,6 +23,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import React from "react";
+import backendPath from "../utils/backendPath";
 
 const forgotPassSchema = object({
   email: string().min(1, "Email is required").email("Email is invalid"),
@@ -56,7 +57,7 @@ const ForgotPasswordPage = () => {
   const onSubmitHandler = async (values) => {
     console.log(JSON.stringify(values, null, 4));
     axios
-      .post("https://care-for-animals-backend.onrender.com/app/forgot", values)
+      .post(backendPath + "/app/forgot", values)
       .then((response) => {
         console.log(response);
         if (response.status === 200) {

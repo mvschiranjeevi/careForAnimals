@@ -1,7 +1,6 @@
 import http from "./httpService";
 // @ts-ignore
 import config from "../utils/config.json";
-// var postEndPoint = "https://care-for-animals-backend.onrender.com/posts";
 export function createpost(postbody, user) {
   const users = {
     _id: localStorage.getItem("user_id"),

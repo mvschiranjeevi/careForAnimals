@@ -4,11 +4,11 @@ import React, { useEffect, useState } from "react";
 import Provider from "../chakra-theme/Provider";
 import AnimalCard from "../components/AnimalCard";
 import ScrollIntoView from "react-scroll-into-view";
-import ResponsiveAppBar from "../components/navBar";
 import Footer from "../components/Footer";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import backendPath from "../utils/backendPath";
 
 const HomePage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -20,13 +20,10 @@ const HomePage = () => {
 
   async function getAnimalData() {
     try {
-      const response = await axios
-        .get(
-          "https://care-for-animals-backend.onrender.com/app/getSetOfAnimals",
-          {
-            params: {},
-          }
-        )
+      await axios
+        .get(backendPath + "/app/getSetOfAnimals", {
+          params: {},
+        })
         .then(function (response) {
           setAnimals(response.data);
           setIsLoaded(true);

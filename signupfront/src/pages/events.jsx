@@ -58,28 +58,23 @@ import {
   RepeatIcon,
 } from "@chakra-ui/icons";
 import { BiCalendarEvent, BiMap, BiUserPlus } from "react-icons/bi";
+import backendPath from "../utils/backendPath";
 
 const categoryData = () => {
-  return axios
-    .get(`https://care-for-animals-backend.onrender.com/app/getCategories`)
-    .then((response) => {
-      return response.data;
-    });
+  return axios.get(backendPath + `/app/getCategories`).then((response) => {
+    return response.data;
+  });
 };
 
 const eventData = () => {
-  return axios
-    .get(`https://care-for-animals-backend.onrender.com/app/seeEvents`)
-    .then((response) => {
-      return response.data;
-    });
+  return axios.get(backendPath + `/app/seeEvents`).then((response) => {
+    return response.data;
+  });
 };
 
 const PostparticipateData = ({ id, isInterested }) => {
   return axios
-    .post(
-      `https://care-for-animals-backend.onrender.com/app/participate?id=${id}&status=${isInterested}`
-    )
+    .post(backendPath + `/app/participate?id=${id}&status=${isInterested}`)
     .then((response) => {
       console.log(response);
       return response.data;
@@ -87,9 +82,7 @@ const PostparticipateData = ({ id, isInterested }) => {
 };
 const participateData = (event) => {
   return axios
-    .get(
-      `https://care-for-animals-backend.onrender.com/app/participation?id=${event._id}`
-    )
+    .get(backendPath + `/app/participation?id=${event._id}`)
     .then((response) => {
       // console.log(response.data);
       return response.data;
@@ -98,12 +91,9 @@ const participateData = (event) => {
 
 const deleteEvent = (event) => {
   return axios
-    .delete(
-      `https://care-for-animals-backend.onrender.com/app/deleteEvent?eventTitle=${event.eventTitle}`
-    )
+    .delete(backendPath + `/app/deleteEvent?eventTitle=${event.eventTitle}`)
     .then((resp) => {
       window.location.reload();
-
       console.log(resp.data);
     });
 };
@@ -111,10 +101,7 @@ const deleteEvent = (event) => {
 const updateEvent = (event, obj) => {
   console.log("OBJ:", obj);
   return axios
-    .put(
-      `https://care-for-animals-backend.onrender.com/app/updateEvent?eventTitle=${event.eventTitle}`,
-      obj
-    )
+    .put(backendPath + `/app/updateEvent?eventTitle=${event.eventTitle}`, obj)
     .then((resp) => {
       window.location.reload();
       console.log(resp.data);

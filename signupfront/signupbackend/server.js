@@ -42,4 +42,5 @@ app.use("/tags", tags);
 app.use("/reply", replies);
 app.use(express.json());
 app.use("/app", routesUrls);
-app.listen(port, () => console.log("server is up and running" + port));
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log("server is up and running"));

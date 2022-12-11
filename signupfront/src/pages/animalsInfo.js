@@ -20,7 +20,7 @@ import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
-
+import backendPath from "../utils/backendPath";
 import CardActions from "@mui/material/CardActions";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -54,7 +54,7 @@ const AnimalsInfo = (props) => {
   async function getAnimalInfo(name) {
     try {
       const response = await axios
-        .get("https://care-for-animals-backend.onrender.com/app/animalInfo", {
+        .get(backendPath + "/app/animalInfo", {
           params: { animalName: name },
         })
         .then(function (response) {

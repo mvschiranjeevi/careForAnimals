@@ -23,6 +23,7 @@ import { ReactComponent as GitHubLogo } from "../assets/github.svg";
 import styled from "@emotion/styled";
 import axios from "axios";
 import React, { useState } from "react";
+import backendPath from "../utils/backendPath";
 
 // 👇 Styled React Route Dom Link Component
 export const LinkItem = styled(Link)`
@@ -81,7 +82,7 @@ const LoginPage = () => {
   const onSubmitHandler = async (values) => {
     console.log(values);
     axios
-      .post("https://care-for-animals-backend.onrender.com/app/login", values)
+      .post(backendPath + "/app/login", values)
       .then((response) => {
         // console.log(response);
         if (response.status === 200) {
@@ -114,7 +115,7 @@ const LoginPage = () => {
 
   const userAuth = () => {
     axios
-      .get("https://care-for-animals-backend.onrender.com/app/isUserAuth", {
+      .get(backendPath + "/app/isUserAuth", {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },

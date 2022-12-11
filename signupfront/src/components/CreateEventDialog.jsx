@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { object, string } from "zod";
 import axios from "axios";
+import backendPath from "../utils/backendPath";
 
 const eventsSchema = object({
   eventTitle: string().min(5, {
@@ -63,7 +64,6 @@ const CreateEventDialog = ({ categoryData }) => {
     resolver: zodResolver(eventsSchema),
     defaultValues,
   });
-
   const processMessage = (data) => {
     if (
       new Date(data.startDate) > new Date(data.endDate) ||
@@ -73,10 +73,7 @@ const CreateEventDialog = ({ categoryData }) => {
     } else {
       setGreater(false);
       const response = axios
-        .post(
-          "https://care-for-animals-backend.onrender.com/app/createEvent",
-          methods.getValues()
-        )
+        .post(backendPath + "/app/createEvent", methods.getValues())
         .then(() => {
           window.location.reload();
         });
@@ -248,17 +245,6 @@ const CreateEventDialog = ({ categoryData }) => {
                       />
                     </FormControl>
                   </HStack>
-
-                  {/* <Box>
-                  <FormLabel htmlFor="img">
-                    Upload an image of your event here
-                  </FormLabel>
-                  <Input
-                    placeholder="Select Date and Time"
-                    size="s"
-                    type="file"
-                  />
-                </Box> */}
                 </Stack>
               </DrawerBody>
 
@@ -277,5 +263,3 @@ const CreateEventDialog = ({ categoryData }) => {
 };
 
 export default CreateEventDialog;
-
-// event name, event location, event image, event dates, event description, event type

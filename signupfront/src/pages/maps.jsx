@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { background, Stack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -21,6 +20,9 @@ import {
   Marker,
   Inject,
 } from "@syncfusion/ej2-react-maps";
+
+import backendPath from "../utils/backendPath";
+
 const checkEmpty = (value) => {
   // const height = value?.length;
   // console.log(height);
@@ -32,6 +34,7 @@ const checkEmpty = (value) => {
     return false;
   }
 };
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -63,7 +66,7 @@ const AnimalsInfo = (props) => {
   async function getAnimalInfo(name) {
     try {
       const response = await axios
-        .get("https://care-for-animals-backend.onrender.com/app/animalInfo", {
+        .get(backendPath + "/app/animalInfo", {
           params: { animalName: name },
         })
         .then(function (response) {

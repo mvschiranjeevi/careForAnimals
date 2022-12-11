@@ -29,6 +29,7 @@ import { TiSortAlphabetically } from "react-icons/ti";
 import { TbTrees } from "react-icons/tb";
 import Footer from "../components/Footer";
 import Maps from "./maps";
+import backendPath from "../utils/backendPath";
 
 const AnimalsInfo = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -44,7 +45,7 @@ const AnimalsInfo = (props) => {
   async function getAnimalInfo(name) {
     try {
       const response = await axios
-        .get("https://care-for-animals-backend.onrender.com/app/animalInfo", {
+        .get(backendPath + "/app/animalInfo", {
           params: { animalName: name },
         })
         .then(function (response) {
@@ -101,7 +102,7 @@ const AnimalsInfo = (props) => {
           // rounded="1rem"
           boxShadow="lg"
           border="2px solid"
-          borderColor-="gray.600"
+          borderColor="gray.600"
           alignItems="flex-start"
           spacing="4"
         >

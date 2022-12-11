@@ -4,7 +4,8 @@
   "description": "sign up application",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "build": "npm install ."
   },
   "author": "Chiranjeevi",
   "license": "ISC",

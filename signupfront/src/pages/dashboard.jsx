@@ -11,11 +11,12 @@ import ResponsiveAppBar from "../components/navBar";
 import { Spinner, Stack } from "@chakra-ui/react";
 import Provider from "../chakra-theme/Provider";
 import { LinkItem } from "./login";
+import backendPath from "../utils/backendPath";
 
 class DashboardPage extends Component {
   token = localStorage.getItem("token");
-  postEndPoint = "https://care-for-animals-backend.onrender.com/posts/";
-  tagsEndPoint = "https://care-for-animals-backend.onrender.com/tags/";
+  postEndPoint = backendPath + "/posts/";
+  tagsEndPoint = backendPath + "/tags/";
   state = {
     allposts: [],
     currentPage: 1,

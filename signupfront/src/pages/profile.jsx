@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import ResponsiveAppBar from "../components/navBar";
 import Provider from "../chakra-theme/Provider";
 import React from "react";
+import backendPath from "../utils/backendPath";
 
 const data = () => {
   if (!localStorage.getItem("user")) {
@@ -33,9 +34,7 @@ const data = () => {
   const email = localStorage.getItem("user").slice(1, -1);
   console.log(email);
   return axios
-    .get(
-      `https://care-for-animals-backend.onrender.com/app/seeProfile?email=${email}`
-    )
+    .get(backendPath + `/app/seeProfile?email=${email}`)
     .then((response) => {
       console.log("hi");
       console.log(response);
